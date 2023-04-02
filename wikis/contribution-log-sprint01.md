@@ -22,4 +22,4 @@ Liangdi - lwan0141@student.monash.edu
 | Harry (Quoc) | Created 5 user stories | 1 hour | 29/03/23 5:00 pm | 29/03/23 6:00 pm |  |
 | Harry (Quoc) | Add to 3. basic architecture | 1.5 hour | 30/03/23 3:00 pm | 30/03/23  4:30 pm |  |
 | Harry (Quoc) | Re-drawing and updating domain model diagram | 2.0 hour | 02/04/23 9:00 pm | 02/04/23 11:00 pm |  |
-| Harry (Quoc) | Add to 4.2 relationships | 0.5 hour | 02/04/23 11:00 pm | 02/04/23 11:30 pm |  |
+| Harry (Quoc) | Add to 3.2 relationships | 0.5 hour | 02/04/23 11:00 pm | 02/04/23 11:30 pm |  |

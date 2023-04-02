@@ -7,7 +7,7 @@ Liangdi - lwan0141@student.monash.edu
 
 ### Contribution Log Table
 | member | task description | time spent | start date-time | completed date-time | other notes |
-|:------:|------------------|:----------:|:---------------:|:--------------------|------------:|
+|:------:|------------------|:----------:|:---------------:|:-------------------:|-------------|
 | Liangdi | team name, photo, and membership | 15 mins | 30/03/23 2:00 pm | 30/03/23 8:00 pm |  |
 | Liangdi | write and edit 1.2. team schedule | 1 hour | 30/03/23 2:00 pm | 01/04/23 3:00 pm |  |
 | Liangdi | write and edit 1.3. tech stack | 2 hours | 30/03/23 2:00 pm | 01/04/23 3:30 pm |  |

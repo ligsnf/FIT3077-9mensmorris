@@ -1,3 +1,5 @@
+# Contribution Log - Sprint 1
+
 ### Members
 Harry (Quoc) - hhan0014@student.monash.edu\
 Arthur (Jer) - jlin0074@student.monash.edu\

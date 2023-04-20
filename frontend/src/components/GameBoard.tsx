@@ -19,7 +19,7 @@ const GameBoard = () => {
     // Render the game board
     return (
         <div className="flex flex-col items-center justify-center">
-            <div className="mb-8 flex justify-center gap-2 bg-amber-100 p-4 rounded text-black w-fit">
+            <div className="mb-8 flex justify-center gap-2 bg-amber-100 p-4 rounded text-black w-60">
                 <Piece colour={board.getState().currentPlayer.getColour()} />
                 <h3 className=" text-lg">{board.getState().currentPlayer.getColour()}'s turn to play</h3>
             </div>

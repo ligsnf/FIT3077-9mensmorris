@@ -2,19 +2,19 @@ import React from 'react'
 import { Piece, PieceColour } from '../models/Piece'
 
 type Props = {
-    piece: Piece | undefined
+    colour: PieceColour | undefined
 }
 
-const PieceComponent = ({ piece }: Props) => {
+const PieceComponent = ({ colour }: Props) => {
 
-    let colour
-    if (piece) {
-        switch (piece.getColour()) {
+    let pieceColour
+    if (colour) {
+        switch (colour) {
             case PieceColour.White:
-                colour = 'bg-white'
+                pieceColour = 'bg-white'
                 break;
             case PieceColour.Black:
-                colour = 'bg-black'
+                pieceColour = 'bg-black'
                 break;
             default:
                 break;
@@ -22,7 +22,7 @@ const PieceComponent = ({ piece }: Props) => {
     }
 
     return (
-        <div className={`${colour} rounded-full w-8 h-8 shadow-[1px_2px_8px_2px_rgba(0,0,0,0.3)] group-hover:shadow-[0_0px_4px_4px_rgba(34,197,94,1)]`}></div>
+        <div className={`${pieceColour} rounded-full w-8 h-8 shadow-[1px_2px_8px_2px_rgba(0,0,0,0.3)] group-hover:shadow-[0_0px_4px_4px_rgba(34,197,94,1)]`}></div>
     )
 }
 

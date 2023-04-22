@@ -1,5 +1,5 @@
 import React from 'react'
-import { Position } from '../models/Board'
+import { Position } from '../models/Position'
 import Piece from './Piece'
 
 type Props = {
@@ -14,8 +14,8 @@ const PositionComponent = ({ position }: Props) => {
         content = <div className="bg-yellow-950 rounded-full w-4 h-4 group-hover:shadow-[0_0px_4px_4px_rgba(34,197,94,1)]"></div>
     } 
 
-    if (position?.piece) {
-        content = <Piece colour={position.piece.getColour()} />
+    if (position?.getPiece()) {
+        content = <Piece colour={position.getPiece()?.getColour()} />
     }
 
     return (

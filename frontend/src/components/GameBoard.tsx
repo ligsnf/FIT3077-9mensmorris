@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Game } from "../models/Game";
 import Position from "./Position";
+import Mill from "./Mill";
 import Piece from "./Piece";
 
 const GameBoard = () => {
@@ -17,12 +18,6 @@ const GameBoard = () => {
         setGame(new Game(gameState));
     };
 
-    // Test rendering mill
-    const piece0 = game.getBoard().getPosition(0).piece?.getColour();
-    const piece3 = game.getBoard().getPosition(3).piece?.getColour();
-    const piece6 = game.getBoard().getPosition(6).piece?.getColour();
-    const isWinningRow = (piece0 === piece3 && piece3 === piece6 && piece0 !== undefined);
-
     // Render the game board
     return (
         <div className="flex flex-col items-center justify-center">
@@ -34,25 +29,25 @@ const GameBoard = () => {
                 {/* Render Mills */}
                 <div>
                     {/* Outer */}
-                    <div id="0-6" className={`bg-yellow-950 w-[21.15rem] h-1 absolute top-[1.875rem] left-[1.875rem] ${isWinningRow && "shadow-[0_0px_6px_3px_rgba(34,197,94,1)]"}`}></div>
-                    <div id="0-42" className="bg-yellow-950 w-1 h-[21.15rem] absolute top-[1.875rem] left-[1.875rem]"></div>
-                    <div id="6-48" className="bg-yellow-950 w-1 h-[21.15rem] absolute top-[1.875rem] right-[1.875rem]"></div>
-                    <div id="42-48" className="bg-yellow-950 w-[21.15rem] h-1 absolute bottom-[1.875rem] left-[1.875rem]"></div>
+                    <Mill id="0-6" mill={game.getBoard().getMill("0-6")} position="w-[21.15rem] h-1 top-[1.875rem] left-[1.875rem]" />
+                    <Mill id="0-42" mill={game.getBoard().getMill("0-42")} position="w-1 h-[21.15rem] top-[1.875rem] left-[1.875rem]" />
+                    <Mill id="6-48" mill={game.getBoard().getMill("6-48")} position="w-1 h-[21.15rem] top-[1.875rem] right-[1.875rem]" />
+                    <Mill id="42-48" mill={game.getBoard().getMill("42-48")} position="w-[21.15rem] h-1 bottom-[1.875rem] left-[1.875rem]" />
                     {/* Middle */}
-                    <div id="8-12" className="bg-yellow-950 w-[14.32rem] h-1 absolute top-[5.36rem] left-[5.36rem]"></div>
-                    <div id="8-36" className="bg-yellow-950 w-1 h-[14.32rem] absolute top-[5.36rem] left-[5.36rem]"></div>
-                    <div id="12-40" className="bg-yellow-950 w-1 h-[14.32rem] absolute top-[5.36rem] right-[5.36rem]"></div>
-                    <div id="36-40" className="bg-yellow-950 w-[14.32rem] h-1 absolute bottom-[5.36rem] left-[5.36rem]"></div>
+                    <Mill id="8-12" mill={game.getBoard().getMill("8-12")} position="w-[14.32rem] h-1 top-[5.36rem] left-[5.36rem]" />
+                    <Mill id="8-36" mill={game.getBoard().getMill("8-36")} position="w-1 h-[14.32rem] top-[5.36rem] left-[5.36rem]" />
+                    <Mill id="12-40" mill={game.getBoard().getMill("12-40")} position="w-1 h-[14.32rem] top-[5.36rem] right-[5.36rem]" />
+                    <Mill id="36-40" mill={game.getBoard().getMill("36-40")} position="w-[14.32rem] h-1 bottom-[5.36rem] left-[5.36rem]" />
                     {/* Inner */}
-                    <div id="16-18" className="bg-yellow-950 w-[7.2rem] h-1 absolute top-[8.9rem] left-[8.9rem]"></div>
-                    <div id="16-30" className="bg-yellow-950 w-1 h-[7.2rem] absolute top-[8.9rem] left-[8.9rem]"></div>
-                    <div id="18-32" className="bg-yellow-950 w-1 h-[7.2rem] absolute top-[8.9rem] right-[8.9rem]"></div>
-                    <div id="30-32" className="bg-yellow-950 w-[7.2rem] h-1 absolute bottom-[8.9rem] left-[8.9rem]"></div>
+                    <Mill id="16-18" mill={game.getBoard().getMill("16-18")} position="w-[7.2rem] h-1 top-[8.9rem] left-[8.9rem]" />
+                    <Mill id="16-30" mill={game.getBoard().getMill("16-30")} position="w-1 h-[7.2rem] top-[8.9rem] left-[8.9rem]" />
+                    <Mill id="18-32" mill={game.getBoard().getMill("18-32")} position="w-1 h-[7.2rem] top-[8.9rem] right-[8.9rem]" />
+                    <Mill id="30-32" mill={game.getBoard().getMill("30-32")} position="w-[7.2rem] h-1 bottom-[8.9rem] left-[8.9rem]" />
                     {/* Intersecting */}
-                    <div id="3-17" className="bg-yellow-950 w-1 h-[7.2rem] absolute top-[1.875rem] left-[12.4rem]"></div>
-                    <div id="21-23" className="bg-yellow-950 w-[7.2rem] h-1 absolute top-[12.4rem] left-[1.875rem]"></div>
-                    <div id="25-27" className="bg-yellow-950 w-[7.2rem] h-1 absolute top-[12.4rem] right-[1.875rem]"></div>
-                    <div id="31-45" className="bg-yellow-950 w-1 h-[7.2rem] absolute bottom-[1.875rem] left-[12.4rem]"></div>
+                    <Mill id="3-17" mill={game.getBoard().getMill("3-17")} position="w-1 h-[7.2rem] top-[1.875rem] left-[12.4rem]" />
+                    <Mill id="21-23" mill={game.getBoard().getMill("21-23")} position="w-[7.2rem] h-1 top-[12.4rem] left-[1.875rem]" />
+                    <Mill id="25-27" mill={game.getBoard().getMill("25-27")} position="w-[7.2rem] h-1 top-[12.4rem] right-[1.875rem]" />
+                    <Mill id="31-45" mill={game.getBoard().getMill("31-45")} position="w-1 h-[7.2rem] bottom-[1.875rem] left-[12.4rem]" />
                 </div>
                 {/* Render Pieces */}
                 <div className="grid grid-cols-7 gap-6 w-[25rem] p-4 shadow-[0_0px_0px_16px_rgba(217,119,6,1)] relative rounded">

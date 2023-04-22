@@ -19,8 +19,8 @@ export class Game {
             return
         }
 
-        const playerWhite = new Player('Player White', PieceColour.White);
-        const playerBlack = new Player('Player Black', PieceColour.Black);
+        const playerWhite = new Player(PieceColour.White);
+        const playerBlack = new Player(PieceColour.Black);
         const defaultState: GameState = {
             board: new Board(),
             playerWhite: playerWhite,

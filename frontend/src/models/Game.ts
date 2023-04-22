@@ -4,28 +4,27 @@ import { Player } from './Player';
 
 interface GameState {
     board: Board
-    playerWhite: Player;
-    playerBlack: Player;
     currentPlayer: Player;
     winner: Player | undefined;
     isGameOver: boolean;
 }
 export class Game {
     private state: GameState;
+    playerWhite: Player;
+    playerBlack: Player;
 
     constructor(state?: GameState) {
+        this.playerWhite = new Player(PieceColour.White);
+        this.playerBlack = new Player(PieceColour.Black);
+
         if (state) {
             this.state = state
             return
         }
 
-        const playerWhite = new Player(PieceColour.White);
-        const playerBlack = new Player(PieceColour.Black);
         const defaultState: GameState = {
             board: new Board(),
-            playerWhite: playerWhite,
-            playerBlack: playerBlack,
-            currentPlayer: playerWhite,
+            currentPlayer: this.playerWhite,
             winner: undefined,
             isGameOver: false,
         }

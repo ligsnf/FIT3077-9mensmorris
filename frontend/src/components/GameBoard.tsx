@@ -11,7 +11,7 @@ const GameBoard = () => {
     const handlePieceClick = (index: number) => {
         // Place the piece
         game.getBoard().setPiece(index, game.getCurrentPlayer());
-        game.setCurrentPlayer(game.getCurrentPlayer().getColour() === "white" ? game.getState().playerBlack : game.getState().playerWhite);
+        game.setCurrentPlayer(game.getCurrentPlayer().getColour() === "white" ? game.playerBlack : game.playerWhite);
 
         // Update the game state
         const gameState = game.getState();

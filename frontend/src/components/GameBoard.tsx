@@ -16,6 +16,12 @@ const GameBoard = () => {
         setBoard(new Board(gameState));
     };
 
+    // Test rendering mill
+    const piece0 = board.getPosition(0).piece?.getColour();
+    const piece3 = board.getPosition(3).piece?.getColour();
+    const piece6 = board.getPosition(6).piece?.getColour();
+    const isWinningRow = (piece0 === piece3 && piece3 === piece6 && piece0 !== undefined);
+
     // Render the game board
     return (
         <div className="flex flex-col items-center justify-center">
@@ -27,7 +33,7 @@ const GameBoard = () => {
                 {/* Render Mills */}
                 <div>
                     {/* Outer */}
-                    <div id="0-6" className="bg-yellow-950 w-[21.15rem] h-1 absolute top-[1.875rem] left-[1.875rem]"></div>
+                    <div id="0-6" className={`bg-yellow-950 w-[21.15rem] h-1 absolute top-[1.875rem] left-[1.875rem] ${isWinningRow && "shadow-[0_0px_6px_3px_rgba(34,197,94,1)]"}`}></div>
                     <div id="0-42" className="bg-yellow-950 w-1 h-[21.15rem] absolute top-[1.875rem] left-[1.875rem]"></div>
                     <div id="6-48" className="bg-yellow-950 w-1 h-[21.15rem] absolute top-[1.875rem] right-[1.875rem]"></div>
                     <div id="42-48" className="bg-yellow-950 w-[21.15rem] h-1 absolute bottom-[1.875rem] left-[1.875rem]"></div>

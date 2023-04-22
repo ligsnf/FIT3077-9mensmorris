@@ -56,7 +56,7 @@ export class Board {
     }
 
     // TODO: Place piece - temporary for testing purposes
-    placePiece(index: number, currentPlayer: Player) {
+    setPiece(index: number, currentPlayer: Player) {
         const position = this.getPosition(index);
         if (position.piece) {
             throw new Error(`There is already a piece at (${index})`);

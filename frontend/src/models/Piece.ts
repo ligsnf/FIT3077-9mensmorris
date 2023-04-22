@@ -1,5 +1,3 @@
-import { Position } from "./Board";
-
 export enum PieceColour {
     White = 'white',
     Black = 'black',

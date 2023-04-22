@@ -1,9 +1,9 @@
 import { Position } from './Position';
-import { Player } from './Player';
+import { PieceColour } from './Piece';
 
 export class Mill {
     private positions: [Position, Position, Position];
-    private player?: Player;
+    private colour?: PieceColour;
 
     constructor(positions: [Position, Position, Position]) {
         this.positions = positions;
@@ -13,8 +13,8 @@ export class Mill {
         return this.positions;
     }
 
-    getPlayer(): Player | undefined {
-        return this.player;
+    getColor(): PieceColour | undefined {
+        return this.colour;
     }
 
     isMillFormed(): boolean {
@@ -24,7 +24,7 @@ export class Mill {
         const pieceC = c.getPiece();
 
         if (pieceA?.getColour() === pieceB?.getColour() && pieceB?.getColour() === pieceC?.getColour() && pieceA?.getColour() && pieceA) {
-            this.player = new Player(pieceA.getColour());
+            this.colour = pieceA.getColour();
             return true;
         }
 

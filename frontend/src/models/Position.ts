@@ -8,4 +8,9 @@ export class Position {
         this.piece = piece;
         this.neighbours = [];
     }
+
+    setNeighbours(neighbours: number[]) {
+        this.neighbours = neighbours;
+    }
 }
+

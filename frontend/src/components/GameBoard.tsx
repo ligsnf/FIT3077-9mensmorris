@@ -1,33 +1,34 @@
 import React, { useState } from "react";
-import { Board } from "../models/Board";
+import { Game } from "../models/Game";
 import Position from "./Position";
 import Piece from "./Piece";
 
 const GameBoard = () => {
-    // Initialize the game board
-    const [board, setBoard] = useState(new Board());
+    // Initialize the game
+    const [game, setGame] = useState(new Game());
 
     const handlePieceClick = (index: number) => {
         // Place the piece
-        board.setPiece(index, board.getState().currentPlayer);
+        game.getBoard().setPiece(index, game.getCurrentPlayer());
+        game.setCurrentPlayer(game.getCurrentPlayer().getColour() === "white" ? game.getState().playerBlack : game.getState().playerWhite);
 
-        // Update the game board
-        const gameState = board.getState();
-        setBoard(new Board(gameState));
+        // Update the game state
+        const gameState = game.getState();
+        setGame(new Game(gameState));
     };
 
     // Test rendering mill
-    const piece0 = board.getPosition(0).piece?.getColour();
-    const piece3 = board.getPosition(3).piece?.getColour();
-    const piece6 = board.getPosition(6).piece?.getColour();
+    const piece0 = game.getBoard().getPosition(0).piece?.getColour();
+    const piece3 = game.getBoard().getPosition(3).piece?.getColour();
+    const piece6 = game.getBoard().getPosition(6).piece?.getColour();
     const isWinningRow = (piece0 === piece3 && piece3 === piece6 && piece0 !== undefined);
 
     // Render the game board
     return (
         <div className="flex flex-col items-center justify-center">
             <div className="mb-8 flex justify-center gap-2 bg-amber-100 p-4 rounded text-black w-60">
-                <Piece colour={board.getState().currentPlayer.getColour()} />
-                <h3 className=" text-lg">{board.getState().currentPlayer.getColour()}'s turn to play</h3>
+                <Piece colour={game.getCurrentPlayer().getColour()} />
+                <h3 className=" text-lg">{game.getCurrentPlayer().getColour()}'s turn to play</h3>
             </div>
             <section className="board bg-amber-100 relative">
                 {/* Render Mills */}
@@ -55,7 +56,7 @@ const GameBoard = () => {
                 </div>
                 {/* Render Pieces */}
                 <div className="grid grid-cols-7 gap-6 w-[25rem] p-4 shadow-[0_0px_0px_16px_rgba(217,119,6,1)] relative rounded">
-                    {board.getState().positions.map((position, index) => (
+                    {game.getBoard().getPositions().map((position, index) => (
                         <div
                             key={index}
                             id={index.toString()}
@@ -67,7 +68,7 @@ const GameBoard = () => {
                     ))}
                 </div>
             </section>
-            <button className="mt-8" onClick={() => setBoard(new Board())}>
+            <button className="mt-8" onClick={() => setGame(new Game())}>
                 Reset
             </button>
         </div>

@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import GameBoard from './components/GameBoard'
+import GameDisplay from './components/GameDisplay'
 
 function App() {
 
@@ -10,14 +9,14 @@ function App() {
     <div className="App">
       <section className="flex flex-col gap-8">
         <h1>Nine Men's Morris</h1>
-        <div className="board flex justify-center">
-          <GameBoard />
+        <div className="flex justify-center">
+          <GameDisplay />
         </div>
-        <p className="read-the-docs">
+        <p className="text-[#888]">
           Made by Three Men's Morris
         </p>
       </section>
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center">
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>

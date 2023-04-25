@@ -16,4 +16,9 @@ export class Player {
     getPiecesLeft(): number {
         return this.piecesLeft;
     }
+
+    decrementPiecesLeft(): void {
+        this.piecesLeft--;
+    }
+
 }

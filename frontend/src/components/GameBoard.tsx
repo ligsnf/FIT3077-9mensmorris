@@ -12,7 +12,8 @@ const GameBoard = () => {
     const handlePieceClick = (index: number) => {
         // Place the piece
         game.getBoard().setPiece(index, game.getCurrentPlayer());
-        game.setCurrentPlayer(game.getCurrentPlayer().getColour() === "white" ? game.playerBlack : game.playerWhite);
+        game.getCurrentPlayer().decrementPiecesLeft();
+        game.setCurrentPlayer(game.getCurrentPlayer().getColour() === "white" ? game.getPlayerBlack() : game.getPlayerWhite());
 
         // Update the game state
         const gameState = game.getState();
@@ -28,7 +29,7 @@ const GameBoard = () => {
             </div>
             <section className="flex justify-between gap-12">
                 <div className="grid items-center">
-                    <PiecesLeft player={game.playerWhite} />
+                    <PiecesLeft player={game.getPlayerWhite()} />
                 </div>
                 <div className="board bg-amber-100 relative">
                     {/* Render Mills */}
@@ -69,7 +70,7 @@ const GameBoard = () => {
                     </div>
                 </div>
                 <div className="grid items-center">
-                    <PiecesLeft player={game.playerBlack} />
+                    <PiecesLeft player={game.getPlayerBlack()} />
                 </div>
             </section>
             <button className="mt-8" onClick={() => setGame(new Game())}>

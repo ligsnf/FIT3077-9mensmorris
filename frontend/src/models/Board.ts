@@ -69,6 +69,8 @@ export class Board {
         const position = this.getPosition(index)
         if (position.getPiece()) {
             throw new Error(`There is already a piece at (${index})`)
+        } else if (currentPlayer.getPiecesLeft() === 0) {
+            throw new Error(`Player ${currentPlayer.getColour()} has no pieces left`)
         } else {
             position.setPiece(new Piece(currentPlayer.getColour()))
         }

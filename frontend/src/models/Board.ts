@@ -93,11 +93,6 @@ export class Board {
         const position = this.getPosition(index)
         if (this.selectedPiece === index) {
             this.resetCheckMove()
-            for (index of this.getPosition(index).getNeighbours()) {
-                if (index !== undefined && this.getPosition(index).getPiece() === undefined) {
-                    this.getPosition(index).setIsValidMove(false)
-                }
-            }
             console.log("Deselect piece")
         }
         else if (!this.validMove.includes(index)) {
@@ -107,11 +102,6 @@ export class Board {
             if (!position.getPiece()) {
                 //Remove the piece from old position
                 this.getPosition(this.getSelectedPiece()).setPiece(undefined)
-                for (const index of this.getPosition(this.getSelectedPiece()).getNeighbours()) {
-                    if (index !== undefined && this.getPosition(index).getPiece() === undefined) {
-                        this.getPosition(index).setIsValidMove(false)
-                    }
-                }
                 //Place the piece in new position
                 position.setPiece(new Piece(currentPlayer.getColour()))
                 this.isPieceMoved = true
@@ -189,6 +179,11 @@ export class Board {
 
     resetCheckMove() {
         this.selectedPiece = -1
+        for (const index of this.validMove) {
+            if (index !== undefined && this.getPosition(index).getPiece() === undefined) {
+                this.getPosition(index).setIsValidMove(false)
+            }
+        }
         this.validMove = []
     }
 

@@ -18,7 +18,8 @@ export class Player {
     }
 
     decrementPiecesLeft(): void {
-        this.piecesLeft--;
+        if (this.piecesLeft - 1 !== -1)
+            this.piecesLeft--;
     }
 
 }

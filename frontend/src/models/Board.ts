@@ -180,9 +180,7 @@ export class Board {
     resetCheckMove() {
         this.selectedPiece = -1
         for (const index of this.validMove) {
-            if (index !== undefined && this.getPosition(index).getPiece() === undefined) {
-                this.getPosition(index).setIsValidMove(false)
-            }
+            this.getPosition(index).setIsValidMove(false)
         }
         this.validMove = []
     }

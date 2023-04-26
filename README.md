@@ -7,8 +7,9 @@ Chosen advanced requirement:\
 ## Team Members
 Harry (Quoc) - hhan0014@student.monash.edu\
 Arthur (Jer) - jlin0074@student.monash.edu\
-Liangdi - lwan0141@student.monash.edu\
-[Contribution Log](https://git.infotech.monash.edu/fit3077-s1-2023/CL_Thursday4pm_Team4/project/-/wikis/Contribution-Log)
+Liangdi - lwan0141@student.monash.edu
+
+See [Contribution Log](https://git.infotech.monash.edu/fit3077-s1-2023/CL_Thursday4pm_Team4/project/-/wikis/Contribution-Log)
 
 ## How to run
 1. clone repository

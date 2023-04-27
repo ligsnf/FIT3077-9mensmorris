@@ -19,3 +19,8 @@ See [Contribution Log](https://git.infotech.monash.edu/fit3077-s1-2023/CL_Thursd
 5. run "npm run preview" command
 6. ctrl + click on link to "http://localhost:4173/" in the terminal
 7. play the game
+
+## How to play
+(for current implementation - sprint 2)
+1. Click on a position on the board to place a piece.
+2. Once you have no pieces left, click on a piece that has empty positions adjacent to it. This will select that piece and it will have a green shadow. The valid moves will be highlighted, and click one of those positions to move the piece there. Otherwise, click on the same piece to deselect it.

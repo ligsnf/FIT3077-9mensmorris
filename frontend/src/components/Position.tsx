@@ -15,7 +15,7 @@ const PositionComponent = ({ position }: Props) => {
     } 
 
     if (position?.getPiece()) {
-        content = <Piece colour={position.getPiece()?.getColour()} />
+        content = <Piece piece={position.getPiece()} />
     }
 
     return (

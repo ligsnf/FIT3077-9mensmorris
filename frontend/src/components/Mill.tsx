@@ -12,7 +12,7 @@ const MillComponent = ({ id, mill, position }: Props) => {
     const isMillFormed = mill.isMillFormed()
 
     return (
-        <div id={id} className={`bg-yellow-950 absolute ${position} ${isMillFormed && "shadow-[0_0px_6px_3px_rgba(34,197,94,1)]"}`}></div>
+        <div id={id} className={`bg-yellow-950 absolute ${position} ${isMillFormed && "shadow-[0_0px_6px_3px_rgba(56,189,248,1)]"}`}></div>
     )
 }
 

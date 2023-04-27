@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Game } from "../models/Game";
+import { Piece } from "../models/Piece";
 import Board from "./Board";
 import PiecesLeft from "./PiecesLeft";
-import Piece from "./Piece";
+import PieceUI from "./Piece";
 
 const GameDisplay = () => {
   // Initialize the game
@@ -46,7 +47,7 @@ const GameDisplay = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="mb-10 flex justify-center gap-2 bg-amber-100 p-4 rounded text-black w-60">
-        <Piece colour={game.getCurrentPlayer().getColour()} />
+        <PieceUI piece={new Piece(game.getCurrentPlayer().getColour())} />
         <h3 className=" text-lg">
           {game.getCurrentPlayer().getColour()}'s turn to play
         </h3>

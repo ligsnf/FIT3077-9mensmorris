@@ -162,10 +162,15 @@ export class Board {
     }
 
     setSelectedPiece(index: number) {
+        this.getPiece(index)?.setIsSelected(true)
         this.selectedPiece = index
     }
 
-    // Get selected piece
+    unsetSelectedPiece() {
+        this.getPiece(this.selectedPiece)?.setIsSelected(false)
+        this.selectedPiece = -1
+    }
+
     getSelectedPiece(): number {
         return this.selectedPiece
     }
@@ -178,7 +183,7 @@ export class Board {
     }
 
     resetCheckMove() {
-        this.selectedPiece = -1
+        this.unsetSelectedPiece()
         for (const index of this.validMove) {
             this.getPosition(index).setIsValidMove(false)
         }

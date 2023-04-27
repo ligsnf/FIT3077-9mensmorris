@@ -2,14 +2,14 @@ import React from 'react'
 import { Piece, PieceColour } from '../models/Piece'
 
 type Props = {
-    colour: PieceColour | undefined
+    piece: Piece | undefined
 }
 
-const PieceComponent = ({ colour }: Props) => {
+const PieceComponent = ({ piece }: Props) => {
 
     let pieceColour
-    if (colour) {
-        switch (colour) {
+    if (piece) {
+        switch (piece.getColour()) {
             case PieceColour.White:
                 pieceColour = 'bg-white'
                 break;
@@ -21,8 +21,15 @@ const PieceComponent = ({ colour }: Props) => {
         }
     }
 
+    let selectedShadow
+    if (piece?.getIsSelected()) {
+        selectedShadow = "shadow-[0_0px_4px_4px_rgba(34,197,94,1)]"
+    } else {
+        selectedShadow = "shadow-[1px_2px_8px_2px_rgba(0,0,0,0.3)]"
+    }
+
     return (
-        <div className={`${pieceColour} rounded-full w-8 h-8 shadow-[1px_2px_8px_2px_rgba(0,0,0,0.3)] group-hover:shadow-[0_0px_4px_4px_rgba(34,197,94,1)]`}></div>
+        <div className={`${pieceColour} ${selectedShadow} rounded-full w-8 h-8 group-hover:shadow-[0_0px_4px_4px_rgba(34,197,94,1)]`}></div>
     )
 }
 

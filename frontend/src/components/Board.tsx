@@ -43,7 +43,7 @@ const BoardComponent = ({ game, handlePieceClick }: Props, ) => {
                         key={index}
                         id={index.toString()}
                         className={`w-8 h-8 grid place-items-center group ${position && "hover:cursor-pointer"}`}
-                        onClick={() => handlePieceClick(index)}
+                        onClick={position ? () => handlePieceClick(index) : undefined}
                     >
                         <Position position={position} />
                     </div>

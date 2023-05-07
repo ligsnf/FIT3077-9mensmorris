@@ -2,6 +2,7 @@ import { Piece, PieceColour } from './Piece'
 import { Mill } from './Mill'
 import { Position } from './Position'
 import { Player } from './Player'
+import { RuleChecker } from './RuleChecker'
 
 export class Board {
     private positions: (Position | null)[]
@@ -9,9 +10,12 @@ export class Board {
     private selectedPiece: number
     private isPieceMoved: boolean
     private validMove: number[]
+    private ruleChecker: RuleChecker
 
     constructor() {
         this.positions = Array(49).fill(null)
+
+        this.ruleChecker = new RuleChecker(this);
 
         const validPositions = [0, 3, 6, 8, 10, 12, 16, 17, 18, 21, 22, 23, 25, 26, 27, 30, 31, 32, 36, 38, 40, 42, 45, 48]
         const neighbours = [[3, 21], [0, 6, 10], [3, 27], [10, 22], [3, 8, 12, 17], [10, 26], [17, 23], [10, 16, 18], [17, 25], [0, 22, 42], [8, 21, 23, 36], [16, 22, 30], [18, 26, 32], [12, 25, 27, 40], [6, 26, 48], [23, 31], [30, 32, 38], [25, 31], [22, 38], [31, 36, 40, 45], [26, 38], [21, 45], [38, 42, 48], [27, 45]]

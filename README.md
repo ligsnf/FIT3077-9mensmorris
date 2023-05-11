@@ -12,11 +12,13 @@ Liangdi - lwan0141@student.monash.edu
 See [Contribution Log](https://git.infotech.monash.edu/fit3077-s1-2023/CL_Thursday4pm_Team4/project/-/wikis/Contribution-Log)
 
 ## How to run
+Make sure you have [node](https://nodejs.org/) installed.
 1. clone repository
 2. open terminal
 3. cd into "\project\frontend"
-4. run "npm run build" command
-5. run "npm run preview" command
+4. run "npm install" command (install dependencies)
+4. run "npm run build" command (generate "executables")
+5. run "npm run preview" command (run "executables")
 6. ctrl + click on link to "http://localhost:4173/" in the terminal
 7. play the game
 

@@ -7,14 +7,16 @@ type Props = {
 
 const PieceComponent = ({ piece }: Props) => {
 
-    let pieceColour
+    let pieceColour, pieceLetter
     if (piece) {
         switch (piece.getColour()) {
             case PieceColour.White:
-                pieceColour = 'bg-white'
+                pieceColour = 'bg-white text-black'
+                pieceLetter = 'W'
                 break;
             case PieceColour.Black:
-                pieceColour = 'bg-black'
+                pieceColour = 'bg-black text-white'
+                pieceLetter = 'B'
                 break;
             default:
                 break;
@@ -29,7 +31,7 @@ const PieceComponent = ({ piece }: Props) => {
     }
 
     return (
-        <div className={`${pieceColour} ${selectedShadow} rounded-full w-8 h-8 group-hover:shadow-[0_0px_4px_4px_rgba(34,197,94,1)]`}></div>
+        <div className={`${pieceColour} ${selectedShadow} rounded-full w-8 h-8 grid items-center group-hover:shadow-[0_0px_4px_4px_rgba(34,197,94,1)]`}>{pieceLetter}</div>
     )
 }
 

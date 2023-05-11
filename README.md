@@ -17,10 +17,10 @@ Make sure you have [node](https://nodejs.org/) installed.
 2. open terminal
 3. cd into "\project\frontend"
 4. run "npm install" command (install dependencies)
-4. run "npm run build" command (generate "executables")
-5. run "npm run preview" command (run "executables")
-6. ctrl + click on link to "http://localhost:4173/" in the terminal
-7. play the game
+5. run "npm run build" command (generate "executables")
+6. run "npm run preview" command (run "executables")
+7. ctrl + click on link to "http://localhost:4173/" in the terminal
+8. play the game
 
 ## How to play
 (for current implementation - sprint 2)

@@ -18,8 +18,8 @@ Make sure you have [node](https://nodejs.org/) installed.
 3. cd into "\project\frontend"
 4. run "npm install" command (install dependencies)
 5. run "npm run build" command (generate "executables")
-6. run "npm run preview" command (run "executables")
-7. ctrl + click on link to "http://localhost:4173/" in the terminal
+6. run "npm run preview" command (run/serve "executables")
+7. ctrl + click on link to "http://localhost:4173/" in the terminal or open manually in browser
 8. play the game
 
 ## How to play

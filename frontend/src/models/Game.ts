@@ -50,6 +50,14 @@ export class Game {
         this.state.currentPlayer = player;
     }
 
+    updateCurrentPlayer() {
+        if (this.state.currentPlayer === this.state.playerWhite) {
+            this.state.currentPlayer = this.state.playerBlack;
+        } else {
+            this.state.currentPlayer = this.state.playerWhite;
+        }
+    }
+
     getPlayerWhite(): Player {
         return this.state.playerWhite;
     }

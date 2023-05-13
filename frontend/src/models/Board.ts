@@ -8,7 +8,7 @@ export class Board {
     private positions: (Position | null)[]
     private mills: { [key: string]: Mill }
     private selectedPiece: number
-    private isPieceMoved: boolean
+    private IsMoveSuccess: boolean
     private validMove: number[]
     private ruleChecker: RuleChecker
     private validPositionsIndex: number[]
@@ -46,7 +46,7 @@ export class Board {
             '25-27': new Mill([this.getPosition(25), this.getPosition(26), this.getPosition(27)]),
             '31-45': new Mill([this.getPosition(31), this.getPosition(38), this.getPosition(45)]),
         }
-        this.isPieceMoved = false
+        this.IsMoveSuccess = false
         this.selectedPiece = -1
         this.validMove = []
     }
@@ -110,7 +110,7 @@ export class Board {
                 this.getPosition(this.getSelectedPiece()).unsetPiece()
                 //Place the piece in new position
                 position.setPiece(new Piece(currentPlayer.getColour()))
-                this.isPieceMoved = true
+                this.IsMoveSuccess = true
                 this.resetCheckMove()
                 console.log("Place piece here")
             }
@@ -152,7 +152,7 @@ export class Board {
         if (position.getPiece()) {
             if (currentPlayer.getColour() != position.getPiece()?.getColour()) {
                 position.unsetPiece()
-                this.isPieceMoved = true
+                this.IsMoveSuccess = true
                 currentPlayer.incrementPiecesTaken()
                 opponentPlayer.decrementPiecesOnBoard()
             }
@@ -200,11 +200,11 @@ export class Board {
         return this.selectedPiece
     }
 
-    getIsPieceMoved(): boolean {
-        return this.isPieceMoved
+    getIsMoveSuccess(): boolean {
+        return this.IsMoveSuccess
     }
-    setIsPieceMoved(isMoved: boolean) {
-        this.isPieceMoved = isMoved
+    setIsMoveSuccess(isMoved: boolean) {
+        this.IsMoveSuccess = isMoved
     }
 
     resetCheckMove() {

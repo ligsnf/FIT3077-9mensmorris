@@ -54,13 +54,40 @@ const GameDisplay = () => {
     setGame(new Game(gameState));
   };
 
+  // Text to show above board
+  let statusText
+  switch (game.getCurrentPlayer().getMoveType()) {
+    case "remove":
+      statusText = "Remove opponent's piece"
+      break;
+    case "place":
+      statusText = "Place a piece"
+      break;
+    case "slide":
+      if (game.getBoard().getSelectedPiece() == -1) {
+        statusText = "Select a piece"
+      } else {
+        statusText = "Move your piece"
+      }
+      break;
+    case "fly":
+      if (game.getBoard().getSelectedPiece() == -1) {
+        statusText = "Select a piece"
+      } else {
+        statusText = "Move your piece"
+      }
+      break;
+    default:
+      break;
+  }
+
   // Render the game board
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="mb-10 flex justify-center gap-2 bg-amber-100 p-4 rounded text-black w-60">
+      <div className="mb-10 flex gap-4 bg-amber-100 p-4 rounded text-black w-72">
         <PieceUI piece={new Piece(game.getCurrentPlayer().getColour())} />
-        <h3 className=" text-lg">
-          {game.getCurrentPlayer().getColour()}'s turn to play
+        <h3 className="text-lg">
+          {statusText}
         </h3>
       </div>
       <section className="flex justify-between gap-12">

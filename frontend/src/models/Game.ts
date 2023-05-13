@@ -50,12 +50,16 @@ export class Game {
         this.state.currentPlayer = player;
     }
 
-    updateCurrentPlayer() {
+    getOtherPlayer(): Player {
         if (this.state.currentPlayer === this.state.playerWhite) {
-            this.state.currentPlayer = this.state.playerBlack;
+            return this.state.playerBlack;
         } else {
-            this.state.currentPlayer = this.state.playerWhite;
+            return this.state.playerWhite;
         }
+    }
+
+    updateCurrentPlayer() {
+        this.state.currentPlayer = this.getOtherPlayer();
     }
 
     getPlayerWhite(): Player {
@@ -64,6 +68,15 @@ export class Game {
 
     getPlayerBlack(): Player {
         return this.state.playerBlack;
+    }
+
+    // check if mill is formed and handle the case
+    checkMillFormed() {
+        if (this.state.board.getRuleChecker().checkMillFormed()) {
+            this.state.currentPlayer.setMoveType("remove");
+        } else {
+            this.updateCurrentPlayer();
+        }
     }
 
 }

@@ -13,8 +13,7 @@ const GameDisplay = () => {
 
     switch (game.getCurrentPlayer().getMoveType()) {
       case "remove":
-        let opponent = game.getCurrentPlayer().getColour() === "white" ? game.getPlayerBlack() : game.getPlayerWhite();
-        game.getBoard().removeSelectedPiece(index, game.getCurrentPlayer(), opponent);
+        game.getBoard().removeSelectedPiece(index, game.getCurrentPlayer(), game.getOtherPlayer());
         if (game.getBoard().getIsMoveSuccess()) {
           game.getBoard().setIsMoveSuccess(false);
           game.getCurrentPlayer().unsetMoveType();
@@ -25,11 +24,7 @@ const GameDisplay = () => {
         game.getBoard().setPiece(index, game.getCurrentPlayer());
         game.getCurrentPlayer().decrementPiecesLeft();
         game.getCurrentPlayer().incrementPiecesOnBoard();
-        if (game.getBoard().getRuleChecker().checkMillFormed()) {
-          game.getCurrentPlayer().setMoveType("remove");
-        } else {
-          game.updateCurrentPlayer();
-        }
+        game.checkMillFormed();
         break;
       case "slide":
         //Select Piece
@@ -41,11 +36,7 @@ const GameDisplay = () => {
           game.getBoard().movePiece(index, game.getCurrentPlayer());
           if (game.getBoard().getIsMoveSuccess()) {
             game.getBoard().setIsMoveSuccess(false);
-            if (game.getBoard().getRuleChecker().checkMillFormed()) {
-              game.getCurrentPlayer().setMoveType("remove");
-            } else {
-              game.updateCurrentPlayer();
-            }
+            game.checkMillFormed();
           }
         }
         break;

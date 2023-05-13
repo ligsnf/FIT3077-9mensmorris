@@ -10,15 +10,35 @@ const GameDisplay = () => {
   const [game, setGame] = useState(new Game());
 
   const handlePieceClick = (index: number) => {
+    // console.log(game.getBoard().getRuleChecker().checkMillFormed())
+    if (game.getCurrentPlayer().getMoveType() === "remove") {
+      // remove opponent piece
+      let opponent = game.getCurrentPlayer().getColour() === "white" ? game.getPlayerBlack() : game.getPlayerWhite();
+      game.getBoard().removeSelectedPiece(index, game.getCurrentPlayer(), opponent);
+      if (game.getBoard().getIsPieceMoved()) {
+        game.getBoard().setIsPieceMoved(false);
+        game.getCurrentPlayer().unsetMoveType();
+        game.setCurrentPlayer(
+          game.getCurrentPlayer().getColour() === "white"
+            ? game.getPlayerBlack()
+            : game.getPlayerWhite()
+        );
+      }
+    }
     // Place the piece
-    if (game.getCurrentPlayer().getPiecesLeft() > 0) {
+    else if (game.getCurrentPlayer().getPiecesLeft() > 0) {
       game.getBoard().setPiece(index, game.getCurrentPlayer());
       game.getCurrentPlayer().decrementPiecesLeft();
-      game.setCurrentPlayer(
-        game.getCurrentPlayer().getColour() === "white"
-          ? game.getPlayerBlack()
-          : game.getPlayerWhite()
-      );
+      game.getCurrentPlayer().incrementPiecesOnBoard();
+      if (game.getBoard().getRuleChecker().checkMillFormed()) {
+        game.getCurrentPlayer().setMoveType("remove");
+      } else {
+        game.setCurrentPlayer(
+          game.getCurrentPlayer().getColour() === "white"
+            ? game.getPlayerBlack()
+            : game.getPlayerWhite()
+        );
+      }
     } else {
       //Select Piece
       if (game.getBoard().getSelectedPiece() == -1) {
@@ -29,11 +49,15 @@ const GameDisplay = () => {
         game.getBoard().movePiece(index, game.getCurrentPlayer());
         if (game.getBoard().getIsPieceMoved()) {
           game.getBoard().setIsPieceMoved(false);
-          game.setCurrentPlayer(
-            game.getCurrentPlayer().getColour() === "white"
-              ? game.getPlayerBlack()
-              : game.getPlayerWhite()
-          );
+          if (game.getBoard().getRuleChecker().checkMillFormed()) {
+            game.getCurrentPlayer().setMoveType("remove");
+          } else {
+            game.setCurrentPlayer(
+              game.getCurrentPlayer().getColour() === "white"
+                ? game.getPlayerBlack()
+                : game.getPlayerWhite()
+            );
+          }
         }
       }
     }

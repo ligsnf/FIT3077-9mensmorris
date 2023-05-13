@@ -91,7 +91,7 @@ export class Board {
         if (!position.getPiece()) {
             throw new Error(`There is no piece at (${index})`)
         } else {
-            position.setPiece(undefined)
+            position.unsetPiece()
         }
     }
 
@@ -107,7 +107,7 @@ export class Board {
         else {
             if (!position.getPiece()) {
                 //Remove the piece from old position
-                this.getPosition(this.getSelectedPiece()).setPiece(undefined)
+                this.getPosition(this.getSelectedPiece()).unsetPiece()
                 //Place the piece in new position
                 position.setPiece(new Piece(currentPlayer.getColour()))
                 this.isPieceMoved = true
@@ -143,6 +143,25 @@ export class Board {
             }
         }
         return false;
+    }
+
+
+    // Remove opponent's piece
+    removeSelectedPiece(index: number, currentPlayer: Player, opponentPlayer: Player) {
+        const position = this.getPosition(index)
+        if (position.getPiece()) {
+            if (currentPlayer.getColour() != position.getPiece()?.getColour()) {
+                position.unsetPiece()
+                this.isPieceMoved = true
+                currentPlayer.incrementPiecesTaken()
+                opponentPlayer.decrementPiecesOnBoard()
+            }
+            else {
+                console.log("Please choose your opponent's piece")
+            }
+        } else {
+            console.log(`There is no piece at (${index})`)
+        }
     }
 
     // Select a piece on the board
@@ -198,6 +217,10 @@ export class Board {
 
     getValidPosition(): number[] {
         return this.validPositionsIndex;
+    }
+
+    getRuleChecker(): RuleChecker {
+        return this.ruleChecker;
     }
 
 }

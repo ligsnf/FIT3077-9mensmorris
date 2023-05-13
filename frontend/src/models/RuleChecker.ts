@@ -30,7 +30,7 @@ export class RuleChecker {
     }
 
     getBoard(): Board {
-        return this.board ?? new Board();
+        return this.board;
     }
 
     /*This fuction will return an array of valid moves for a given player, the form of the array is: [from, to].

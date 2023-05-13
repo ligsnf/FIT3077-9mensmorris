@@ -22,8 +22,12 @@ export class Position {
         return this.piece;
     }
 
-    setPiece(piece: Piece | undefined) {
+    setPiece(piece: Piece) {
         this.piece = piece;
+    }
+
+    unsetPiece() {
+        this.piece = undefined;
     }
 
     getIsValidMove(): boolean | undefined {

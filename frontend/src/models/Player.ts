@@ -5,6 +5,7 @@ export class Player {
     private piecesLeft: number;
     private piecesTaken: number;
     private piecesOnBoard: number;
+    private moveType?: string;
 
     constructor(colour: PieceColour) {
         this.colour = colour;
@@ -14,12 +15,24 @@ export class Player {
     }
 
     getMoveType(): string {
-        if (this.piecesLeft > 0)
-            return "Place";
-        else if (this.piecesOnBoard <= 3)
-            return "Fly";
+        if (this.moveType)
+            return this.moveType;
         else
-            return "Move";
+
+        if (this.piecesLeft > 0)
+            return "place";
+        else if (this.piecesOnBoard <= 3)
+            return "fly";
+        else
+            return "slide";
+    }
+
+    setMoveType(moveType: string) {
+        this.moveType = moveType;
+    }
+
+    unsetMoveType() {
+        this.moveType = undefined;
     }
 
     getColour(): PieceColour {

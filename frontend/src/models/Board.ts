@@ -208,6 +208,11 @@ export class Board {
             default:
                 break;
         }
+        // if (!(this.selectedPiece != -1 && (currentPlayer.getMoveType() == "slide" || currentPlayer.getMoveType() == "fly"))) {
+        //     for (const index of this.validMoves) {
+        //         this.getPosition(index).setIsValidMove(true)
+        //     }
+        // }
         for (const index of this.validMoves) {
             this.getPosition(index).setIsValidMove(true)
         }

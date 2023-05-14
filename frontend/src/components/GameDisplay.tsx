@@ -83,8 +83,8 @@ const GameDisplay = () => {
   // Render the game board
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="mb-10 flex gap-4 bg-amber-100 p-4 rounded text-black w-72">
-        <PieceUI piece={new Piece(game.getCurrentPlayer().getColour())} />
+      <div className="mb-10 flex gap-4 bg-amber-100 p-4 rounded text-black w-80">
+        <PieceUI piece={new Piece(game.getCurrentPlayer().getColour())} isValidMove={false} />
         <h3 className="text-lg">
           {statusText}
         </h3>

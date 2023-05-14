@@ -2,10 +2,11 @@ import React from 'react'
 import { Piece, PieceColour } from '../models/Piece'
 
 type Props = {
-    piece: Piece | undefined
+    piece: Piece | undefined,
+    isValidMove: boolean | undefined
 }
 
-const PieceComponent = ({ piece }: Props) => {
+const PieceComponent = ({ piece, isValidMove }: Props) => {
 
     let pieceColour, pieceLetter
     if (piece) {
@@ -24,7 +25,7 @@ const PieceComponent = ({ piece }: Props) => {
     }
 
     let selectedShadow
-    if (piece?.getIsSelected()) {
+    if (piece?.getIsSelected() || isValidMove) {
         selectedShadow = "shadow-[0_0px_4px_4px_rgba(34,197,94,1)]"
     } else {
         selectedShadow = "shadow-[1px_2px_8px_2px_rgba(0,0,0,0.3)]"

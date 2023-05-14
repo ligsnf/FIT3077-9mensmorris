@@ -87,7 +87,20 @@ export class RuleChecker {
         return validPlacements;
     }
 
-    //This function will return a list of valid positions for a given player to slide a piece.
+    //This function will return a list of valid indexes of pieces a player can select.
+    getValidSelections(player: Player): number[] {
+        const validSelections: number[] = [];
+        this.getBoard().getValidPosition().forEach((positionIndex) => {
+            const currentPosition: Position = this.getBoard().getPosition(positionIndex);
+            //Check if the position is not empty and if the colour of the current piece is the same as the players
+            if (currentPosition.getPiece() != undefined && player.getColour() == currentPosition.getPiece()?.getColour()) {
+                validSelections.push(positionIndex);
+            }
+        });
+        return validSelections;
+    }
+
+    //This function will return a list of valid moves for a given player to slide a piece.
     getValidSlides(player: Player): number[][] {
         const validSlides: number[][] = [];
         this.getBoard().getValidPosition().forEach((positionIndex) => {
@@ -95,7 +108,7 @@ export class RuleChecker {
             currentPosition.getNeighbours().forEach((neighbourIndex) => {
                 const neighbourPosition: Position = this.getBoard().getPosition(neighbourIndex);
                 //Check if the neighbour position is empty and if the colour of the current piece is the same as the players
-                if (neighbourPosition.getPiece() != undefined && player.getColour() == currentPosition.getPiece()?.getColour()) {
+                if (neighbourPosition.getPiece() == undefined && player.getColour() == currentPosition.getPiece()?.getColour()) {
                     validSlides.push([positionIndex, neighbourIndex]);
                 }
             });
@@ -103,7 +116,21 @@ export class RuleChecker {
         return validSlides;
     }
 
-    //This function will return a list of valid positions for a given player to fly a piece.
+    //Similar to getValidSlides but only returns an array of valid destinations for a given position
+    getValidSlideDestinations(player: Player, positionIndex: number): number[] {
+        const validSlides: number[] = [];
+        const currentPosition: Position = this.getBoard().getPosition(positionIndex);
+        currentPosition.getNeighbours().forEach((neighbourIndex) => {
+            const neighbourPosition: Position = this.getBoard().getPosition(neighbourIndex);
+            //Check if the neighbour position is empty and if the colour of the current piece is the same as the players
+            if (neighbourPosition.getPiece() == undefined && player.getColour() == currentPosition.getPiece()?.getColour()) {
+                validSlides.push(neighbourIndex);
+            }
+        });
+        return validSlides;
+    }
+
+    //This function will return a list of valid moves for a given player to fly a piece.
     getValidFlights(player: Player): number[][] {
         const validFlights: number[][] = [];
         this.getBoard().getValidPosition().forEach((positionIndex) => {

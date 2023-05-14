@@ -9,7 +9,7 @@ export class Board {
     private mills: { [key: string]: Mill }
     private selectedPiece: number
     private IsMoveSuccess: boolean
-    private validMove: number[]
+    private validMoves: number[]
     private ruleChecker: RuleChecker
     private validPositionsIndex: number[]
 
@@ -48,7 +48,7 @@ export class Board {
         }
         this.IsMoveSuccess = false
         this.selectedPiece = -1
-        this.validMove = []
+        this.validMoves = []
     }
 
     // Helper method to get positions
@@ -95,13 +95,50 @@ export class Board {
         }
     }
 
-    movePiece(index: number, currentPlayer: Player) {
+
+    // Place a piece on the board
+    placeSelectedPiece(index: number, currentPlayer: Player) {
         const position = this.getPosition(index)
+        if (!this.ruleChecker.getValidPlacements().includes(index)) {
+            console.log(`There is already a piece at (${index})`)
+            return
+        }
+
+        position.setPiece(new Piece(currentPlayer.getColour()))
+        this.IsMoveSuccess = true
+        currentPlayer.decrementPiecesLeft();
+        currentPlayer.incrementPiecesOnBoard();
+    }
+
+    // Remove opponent's piece
+    removeSelectedPiece(index: number, currentPlayer: Player, opponentPlayer: Player) {
+        const position = this.getPosition(index)
+        if (!this.ruleChecker.getValidRemovals(currentPlayer).includes(index)) {
+            console.log("Please choose a valid move only.")
+            return
+        }
+
+        position.unsetPiece()
+        this.IsMoveSuccess = true
+        currentPlayer.incrementPiecesTaken()
+        opponentPlayer.decrementPiecesOnBoard()
+        currentPlayer.unsetMoveType()
+    }
+
+    // Select, slide or fly a piece on the board
+    moveSelectedPiece(index: number, currentPlayer: Player) {
+        const position = this.getPosition(index)
+        // Select a piece on the board
+        if (this.selectedPiece == -1 || currentPlayer.getColour() == position.getPiece()?.getColour()) {
+            this.checkSelectedPiece(index, currentPlayer)
+            return
+        }
+        // Move a piece on the board
         if (this.selectedPiece === index) {
             this.resetCheckMove()
             console.log("Deselect piece")
         }
-        else if (!this.validMove.includes(index)) {
+        else if (!this.validMoves.includes(index)) {
             console.log("Please choose the valid move only.")
         }
         else {
@@ -117,76 +154,39 @@ export class Board {
         }
     }
 
-    calculateValidMove(index: number, currentPlayer: Player): boolean {
-        const position = this.getPosition(index)
-        if (position.getPiece()) {
-            if (currentPlayer.getPiecesLeft() == 0 && currentPlayer.getColour() == position.getPiece()?.getColour()) {
-                console.log("Calculate the move")
-                for (const index of position.getNeighbours()) {
-                    if (index !== undefined && this.getPosition(index).getPiece() === undefined) {
-                        this.validMove.push(index)
-                        this.getPosition(index).setIsValidMove(true)
-                    }
-                }
-                console.log("Finish calculate the move")
-                if (this.validMove.length === 0) {
-                    // If the loop did not find a valid move, throw an error
-                    console.log("No valid move for this piece.")
-                }
-                else {
-                    console.log("There is valid move(s)")
-                    return true;
-                }
-            }
-            else {
-                console.log(`There is already a piece at (${index})`)
-            }
-        }
-        return false;
-    }
-
-
-    // Remove opponent's piece
-    removeSelectedPiece(index: number, currentPlayer: Player, opponentPlayer: Player) {
-        const position = this.getPosition(index)
-        if (position.getPiece()) {
-            if (currentPlayer.getColour() != position.getPiece()?.getColour()) {
-                position.unsetPiece()
-                this.IsMoveSuccess = true
-                currentPlayer.incrementPiecesTaken()
-                opponentPlayer.decrementPiecesOnBoard()
-            }
-            else {
-                console.log("Please choose your opponent's piece")
-            }
-        } else {
-            console.log(`There is no piece at (${index})`)
-        }
-    }
-
     // Select a piece on the board
     checkSelectedPiece(index: number, currentPlayer: Player) {
-        const position = this.getPosition(index)
-        if (position.getPiece()) {
-            if (currentPlayer.getColour() == position.getPiece()?.getColour()) {
-                if (this.calculateValidMove(index, currentPlayer) == true) {
-                    this.setSelectedPiece(index)
-                    console.log("Select Piece")
-                }
-                else {
-                    console.log("This piece can't be moved. Please choose different piece!")
-                }
-            }
-            else {
-                console.log("Please choose your color piece")
-            }
+        if (!this.ruleChecker.getValidSelections(currentPlayer).includes(index)) {
+            console.log("Please choose a piece only.")
+            return
         }
-        else {
-            console.log(`There is no piece at (${index})`)
+        switch (currentPlayer.getMoveType()) {
+            case "slide":
+                this.validMoves = this.ruleChecker.getValidSlideDestinations(currentPlayer, index)
+                if (this.ruleChecker.getValidSlideDestinations(currentPlayer, index).length == 0) {
+                    console.log("No valid move for this piece.")
+                    return
+                }
+                break;
+            case "fly":
+                this.validMoves = this.ruleChecker.getValidPlacements()
+                if (this.ruleChecker.getValidPlacements().length == 0) {
+                    console.log("No valid move for this piece.")
+                    return
+                }
+                break;
+            default:
+                console.log("Please choose your move type")
+                return
+                break;
         }
+        this.setSelectedPiece(index)
     }
 
     setSelectedPiece(index: number) {
+        if (this.selectedPiece != -1) {
+            this.getPiece(this.selectedPiece)?.setIsSelected(false)
+        }
         this.getPiece(index)?.setIsSelected(true)
         this.selectedPiece = index
     }
@@ -209,10 +209,10 @@ export class Board {
 
     resetCheckMove() {
         this.unsetSelectedPiece()
-        for (const index of this.validMove) {
+        for (const index of this.validMoves) {
             this.getPosition(index).setIsValidMove(false)
         }
-        this.validMove = []
+        this.validMoves = []
     }
 
     getValidPosition(): number[] {

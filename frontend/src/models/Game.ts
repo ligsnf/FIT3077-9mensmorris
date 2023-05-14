@@ -70,9 +70,17 @@ export class Game {
         return this.state.playerBlack;
     }
 
+    getIsGameOver(): boolean {
+        return this.state.isGameOver;
+    }
+
+    getRuleChecker() {
+        return this.state.board.getRuleChecker();
+    }
+
     // check if mill is formed and handle the case
     checkMillFormed() {
-        if (this.state.board.getRuleChecker().checkMillFormed()) {
+        if (this.getRuleChecker().checkMillFormed()) {
             this.state.currentPlayer.setMoveType("remove");
         } else {
             this.updateCurrentPlayer();

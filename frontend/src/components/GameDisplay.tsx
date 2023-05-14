@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { Game } from "../models/Game";
 import { Piece } from "../models/Piece";
 import Board from "./Board";
@@ -9,45 +9,46 @@ const GameDisplay = () => {
   // Initialize the game
   const [game, setGame] = useState(new Game());
 
+
+  useEffect(() => {
+    // TODO: show pop up if game is over
+
+    // TODO: highlight valid moves
+
+
+    return () => {
+    }
+  }, [])
+
   const handlePieceClick = (index: number) => {
 
+    if (game.getIsGameOver()) { return } // cannot click if game is over
+
+    // Handle move based on move type
     switch (game.getCurrentPlayer().getMoveType()) {
       case "remove":
+        console.log(game.getRuleChecker().getValidRemovals(game.getCurrentPlayer()))
         game.getBoard().removeSelectedPiece(index, game.getCurrentPlayer(), game.getOtherPlayer());
-        if (game.getBoard().getIsMoveSuccess()) {
-          game.getBoard().setIsMoveSuccess(false);
-          game.getCurrentPlayer().unsetMoveType();
-          game.updateCurrentPlayer();
-        }
         break;
       case "place":
-        game.getBoard().setPiece(index, game.getCurrentPlayer());
-        game.getCurrentPlayer().decrementPiecesLeft();
-        game.getCurrentPlayer().incrementPiecesOnBoard();
-        game.checkMillFormed();
+        console.log(game.getRuleChecker().getValidPlacements())
+        game.getBoard().placeSelectedPiece(index, game.getCurrentPlayer());
         break;
       case "slide":
-        //Select Piece
-        if (game.getBoard().getSelectedPiece() == -1) {
-          game.getBoard().checkSelectedPiece(index, game.getCurrentPlayer());
-        }
-        // Move Piece
-        else {
-          game.getBoard().movePiece(index, game.getCurrentPlayer());
-          if (game.getBoard().getIsMoveSuccess()) {
-            game.getBoard().setIsMoveSuccess(false);
-            game.checkMillFormed();
-          }
-        }
+        console.log(game.getRuleChecker().getValidSlideDestinations(game.getCurrentPlayer(), index))
+        game.getBoard().moveSelectedPiece(index, game.getCurrentPlayer());
         break;
       case "fly":
-
+        console.log(game.getRuleChecker().getValidFlights(game.getCurrentPlayer()))
+        game.getBoard().moveSelectedPiece(index, game.getCurrentPlayer());
         break;
-
       default:
         break;
     }
-
+    if (game.getBoard().getIsMoveSuccess()) {
+      game.getBoard().setIsMoveSuccess(false);
+      game.checkMillFormed();
+    }
 
     // Update the game state
     const gameState = game.getState();
@@ -56,29 +57,31 @@ const GameDisplay = () => {
 
   // Text to show above board
   let statusText
-  switch (game.getCurrentPlayer().getMoveType()) {
-    case "remove":
-      statusText = "Remove opponent's piece"
-      break;
-    case "place":
-      statusText = "Place a piece"
-      break;
-    case "slide":
-      if (game.getBoard().getSelectedPiece() == -1) {
-        statusText = "Select a piece"
-      } else {
-        statusText = "Move your piece"
-      }
-      break;
-    case "fly":
-      if (game.getBoard().getSelectedPiece() == -1) {
-        statusText = "Select a piece"
-      } else {
-        statusText = "Move your piece"
-      }
-      break;
-    default:
-      break;
+  if (!game.getIsGameOver()) {
+    switch (game.getCurrentPlayer().getMoveType()) {
+      case "remove":
+        statusText = "Remove opponent's piece"
+        break;
+      case "place":
+        statusText = "Place a piece"
+        break;
+      case "slide":
+        if (game.getBoard().getSelectedPiece() == -1) {
+          statusText = "Select a piece"
+        } else {
+          statusText = "Move your piece"
+        }
+        break;
+      case "fly":
+        if (game.getBoard().getSelectedPiece() == -1) {
+          statusText = "Select a piece"
+        } else {
+          statusText = "Move your piece"
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   // Render the game board

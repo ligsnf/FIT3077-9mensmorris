@@ -8,11 +8,13 @@ import PieceUI from "./Piece";
 const GameDisplay = () => {
   // Initialize the game
   const [game, setGame] = useState(new Game());
-
+  let statusText
 
   useEffect(() => {
     // TODO: show pop up if game is over
-
+    if (game.getIsGameOver()) {
+      console.log(game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer()))
+    }
 
     return () => {
     }
@@ -21,7 +23,6 @@ const GameDisplay = () => {
   const handlePieceClick = (index: number) => {
 
     if (game.getIsGameOver()) { return } // cannot click if game is over
-
     // Handle move based on move type
     switch (game.getCurrentPlayer().getMoveType()) {
       case "remove":
@@ -42,6 +43,7 @@ const GameDisplay = () => {
     if (game.getBoard().getIsMoveSuccess()) {
       game.getBoard().setIsMoveSuccess(false);
       game.checkMillFormed();
+      game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer());
     }
     game.getBoard().clearValidMoves();
     game.getBoard().showValidMoves(game.getCurrentPlayer());
@@ -52,7 +54,6 @@ const GameDisplay = () => {
   };
 
   // Text to show above board
-  let statusText
   if (!game.getIsGameOver()) {
     switch (game.getCurrentPlayer().getMoveType()) {
       case "remove":

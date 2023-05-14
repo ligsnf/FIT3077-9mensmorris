@@ -195,24 +195,19 @@ export class Board {
                 if (this.selectedPiece != -1) {
                     this.validMoves = this.ruleChecker.getValidSlideDestinations(currentPlayer, this.selectedPiece)
                 } else {
-                    this.validMoves = this.ruleChecker.getValidSelections(currentPlayer)
+                    this.validMoves = []
                 }
                 break;
             case "fly":
                 if (this.selectedPiece != -1) {
                     this.validMoves = this.ruleChecker.getValidPlacements()
                 } else {
-                    this.validMoves = this.ruleChecker.getValidSelections(currentPlayer)
+                    this.validMoves = []
                 }
                 break;
             default:
                 break;
         }
-        // if (!(this.selectedPiece != -1 && (currentPlayer.getMoveType() == "slide" || currentPlayer.getMoveType() == "fly"))) {
-        //     for (const index of this.validMoves) {
-        //         this.getPosition(index).setIsValidMove(true)
-        //     }
-        // }
         for (const index of this.validMoves) {
             this.getPosition(index).setIsValidMove(true)
         }

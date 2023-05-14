@@ -88,4 +88,20 @@ export class Game {
         }
     }
 
+    checkGameOver(currentPlayer: Player, otherPlayer: Player): string {
+        let winMessage: string = ""
+        if (currentPlayer.getPiecesOnBoard() < 3 && currentPlayer.getPiecesLeft() === 0) {
+            this.state.winner = otherPlayer;
+            this.state.isGameOver = true;
+            winMessage = `${currentPlayer.getColour()} has less than 3 pieces left`
+        } else if (this.getRuleChecker().getValidMoves(currentPlayer, false).length === 0) {
+            this.state.winner = otherPlayer;
+            this.state.isGameOver = true;
+            winMessage = `${currentPlayer.getColour()} has no valid moves`
+        } else {
+            // game continues
+        }
+        return winMessage
+    }
+
 }

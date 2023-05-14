@@ -12,9 +12,7 @@ const GameDisplay = () => {
   const [showGameOver, setShowGameOver] = useState(false);
 
   useEffect(() => {
-    // TODO: show pop up if game is over
     if (game.getIsGameOver()) {
-      console.log("gam over bro")
       setShowGameOver(true)
     }
 

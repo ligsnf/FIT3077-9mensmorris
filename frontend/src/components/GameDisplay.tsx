@@ -13,12 +13,10 @@ const GameDisplay = () => {
   useEffect(() => {
     // TODO: show pop up if game is over
 
-    // TODO: highlight valid moves
-
 
     return () => {
     }
-  }, [])
+  }, [game])
 
   const handlePieceClick = (index: number) => {
 
@@ -27,19 +25,15 @@ const GameDisplay = () => {
     // Handle move based on move type
     switch (game.getCurrentPlayer().getMoveType()) {
       case "remove":
-        console.log(game.getRuleChecker().getValidRemovals(game.getCurrentPlayer()))
         game.getBoard().removeSelectedPiece(index, game.getCurrentPlayer(), game.getOtherPlayer());
         break;
       case "place":
-        console.log(game.getRuleChecker().getValidPlacements())
         game.getBoard().placeSelectedPiece(index, game.getCurrentPlayer());
         break;
       case "slide":
-        console.log(game.getRuleChecker().getValidSlideDestinations(game.getCurrentPlayer(), index))
         game.getBoard().moveSelectedPiece(index, game.getCurrentPlayer());
         break;
       case "fly":
-        console.log(game.getRuleChecker().getValidFlights(game.getCurrentPlayer()))
         game.getBoard().moveSelectedPiece(index, game.getCurrentPlayer());
         break;
       default:
@@ -49,6 +43,8 @@ const GameDisplay = () => {
       game.getBoard().setIsMoveSuccess(false);
       game.checkMillFormed();
     }
+    game.getBoard().clearValidMoves();
+    game.getBoard().showValidMoves(game.getCurrentPlayer());
 
     // Update the game state
     const gameState = game.getState();

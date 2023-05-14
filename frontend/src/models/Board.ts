@@ -135,7 +135,7 @@ export class Board {
         }
         // Move a piece on the board
         if (this.selectedPiece === index) {
-            this.resetCheckMove()
+            this.unsetSelectedPiece()
             console.log("Deselect piece")
         }
         else if (!this.validMoves.includes(index)) {
@@ -148,7 +148,7 @@ export class Board {
                 //Place the piece in new position
                 position.setPiece(new Piece(currentPlayer.getColour()))
                 this.IsMoveSuccess = true
-                this.resetCheckMove()
+                this.unsetSelectedPiece()
                 console.log("Place piece here")
             }
         }
@@ -183,6 +183,42 @@ export class Board {
         this.setSelectedPiece(index)
     }
 
+    showValidMoves(currentPlayer: Player) {
+        switch (currentPlayer.getMoveType()) {
+            case "remove":
+                this.validMoves = this.ruleChecker.getValidRemovals(currentPlayer)
+                break;
+            case "place":
+                this.validMoves = this.ruleChecker.getValidPlacements()
+                break;
+            case "slide":
+                if (this.selectedPiece != -1) {
+                    this.validMoves = this.ruleChecker.getValidSlideDestinations(currentPlayer, this.selectedPiece)
+                } else {
+                    this.validMoves = this.ruleChecker.getValidSelections(currentPlayer)
+                }
+                break;
+            case "fly":
+                if (this.selectedPiece != -1) {
+                    this.validMoves = this.ruleChecker.getValidPlacements()
+                } else {
+                    this.validMoves = this.ruleChecker.getValidSelections(currentPlayer)
+                }
+                break;
+            default:
+                break;
+        }
+        for (const index of this.validMoves) {
+            this.getPosition(index).setIsValidMove(true)
+        }
+    }
+
+    clearValidMoves() {
+        for (const index of this.validPositionsIndex) {
+            this.getPosition(index).setIsValidMove(false)
+        }
+    }
+
     setSelectedPiece(index: number) {
         if (this.selectedPiece != -1) {
             this.getPiece(this.selectedPiece)?.setIsSelected(false)
@@ -205,14 +241,6 @@ export class Board {
     }
     setIsMoveSuccess(isMoved: boolean) {
         this.IsMoveSuccess = isMoved
-    }
-
-    resetCheckMove() {
-        this.unsetSelectedPiece()
-        for (const index of this.validMoves) {
-            this.getPosition(index).setIsValidMove(false)
-        }
-        this.validMoves = []
     }
 
     getValidPosition(): number[] {

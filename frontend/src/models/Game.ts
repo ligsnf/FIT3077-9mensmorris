@@ -32,6 +32,7 @@ export class Game {
         }
 
         this.state = defaultState
+        this.getBoard().showValidMoves(this.state.currentPlayer)
     }
 
     getState(): GameState {

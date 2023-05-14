@@ -175,7 +175,6 @@ export class RuleChecker {
             for(let i = 0; i < validRemovalsMill.length; i++){
                 validRemovals.push(validRemovalsMill[i]);
             }
-            console.log(validRemovals);
         }
         return validRemovals;
     }

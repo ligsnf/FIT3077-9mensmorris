@@ -71,6 +71,10 @@ export class Game {
         return this.state.playerBlack;
     }
 
+    getWinner(): Player | undefined {
+        return this.state.winner;
+    }
+
     getIsGameOver(): boolean {
         return this.state.isGameOver;
     }

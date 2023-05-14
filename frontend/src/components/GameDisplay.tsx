@@ -2,23 +2,29 @@ import { useState, useEffect } from "react";
 import { Game } from "../models/Game";
 import { Piece } from "../models/Piece";
 import Board from "./Board";
+import GameOverModal from "./GameOverModal";
 import PiecesLeft from "./PiecesLeft";
 import PieceUI from "./Piece";
 
 const GameDisplay = () => {
   // Initialize the game
   const [game, setGame] = useState(new Game());
-  let statusText
+  const [showGameOver, setShowGameOver] = useState(false);
 
   useEffect(() => {
     // TODO: show pop up if game is over
     if (game.getIsGameOver()) {
-      console.log(game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer()))
+      console.log("gam over bro")
+      setShowGameOver(true)
     }
 
     return () => {
     }
   }, [game])
+
+  const startNewGame = () => {
+    setGame(new Game());
+  }
 
   const handlePieceClick = (index: number) => {
 
@@ -54,6 +60,7 @@ const GameDisplay = () => {
   };
 
   // Text to show above board
+  let statusText
   if (!game.getIsGameOver()) {
     switch (game.getCurrentPlayer().getMoveType()) {
       case "remove":
@@ -79,30 +86,35 @@ const GameDisplay = () => {
       default:
         break;
     }
+  } else {
+    statusText = game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer())
   }
 
   // Render the game board
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="mb-10 flex gap-4 bg-amber-100 p-4 rounded text-black w-80">
-        <PieceUI piece={new Piece(game.getCurrentPlayer().getColour())} isValidMove={false} />
-        <h3 className="text-lg">
-          {statusText}
-        </h3>
+    <>
+      {showGameOver && <GameOverModal setShowModal={setShowGameOver} setNewGame={startNewGame} gameOverMessage={game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer())} winningPlayer={game.getWinner()} />}
+      <div className="flex flex-col items-center justify-center">
+        <div className="mb-10 flex gap-4 bg-amber-100 p-4 rounded text-black w-96">
+          <PieceUI piece={new Piece(game.getCurrentPlayer().getColour())} isValidMove={false} />
+          <h3 className="text-lg">
+            {statusText}
+          </h3>
+        </div>
+        <section className="flex justify-between gap-12">
+          <div className="grid items-center">
+            <PiecesLeft player={game.getPlayerWhite()} />
+          </div>
+          <Board game={game} handlePieceClick={handlePieceClick} />
+          <div className="grid items-center">
+            <PiecesLeft player={game.getPlayerBlack()} />
+          </div>
+        </section>
+        <button className="mt-8" onClick={startNewGame}>
+          Reset
+        </button>
       </div>
-      <section className="flex justify-between gap-12">
-        <div className="grid items-center">
-          <PiecesLeft player={game.getPlayerWhite()} />
-        </div>
-        <Board game={game} handlePieceClick={handlePieceClick} />
-        <div className="grid items-center">
-          <PiecesLeft player={game.getPlayerBlack()} />
-        </div>
-      </section>
-      <button className="mt-8" onClick={() => setGame(new Game())}>
-        Reset
-      </button>
-    </div>
+    </>
   );
 };
 

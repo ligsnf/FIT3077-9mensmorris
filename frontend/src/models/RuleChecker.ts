@@ -146,13 +146,37 @@ export class RuleChecker {
     //This function will return a list of valid positions for a given player to remove a piece.
     getValidRemovals(player: Player): number[] {
         const validRemovals: number[] = [];
+        const validRemovalsMill: number[] = [];
         this.getBoard().getValidPosition().forEach((positionIndex) => {
             const currentPosition: Position = this.getBoard().getPosition(positionIndex);
             //Check if the current position is not empty and if the colour of the current piece is not the same as the players
             if (currentPosition.getPiece() != undefined && player.getColour() != currentPosition.getPiece()?.getColour()) {
-                validRemovals.push(positionIndex);
+                //Check if the piece is in a mill
+                var inMill: boolean = false;
+                for (const key of Object.keys(this.millsFormed)) {
+                    // key has an output of: '0-6', '0-42', '6-48', ...
+                    if(this.millsFormed[key]){
+                        const currentMill = this.board.getMill(key);
+                        if(currentMill.getPositions().includes(currentPosition)){
+                            inMill = true;
+                        }
+                    }
+                }
+                if(inMill){
+                    validRemovalsMill.push(positionIndex);
+                }
+                else{
+                    validRemovals.push(positionIndex);
+                }
+                
             }
         });
+        if(validRemovals.length == 0){
+            for(let i = 0; i < validRemovalsMill.length; i++){
+                validRemovals.push(validRemovalsMill[i]);
+            }
+            console.log(validRemovals);
+        }
         return validRemovals;
     }
 

@@ -28,10 +28,10 @@ const GameOverModal = ({ setShowModal, setNewGame, gameOverMessage, winningPlaye
                         </button>
                     </div>
                     <div className="p-10 px-12 overflow-y-auto">
-                        <p className="text-gray-800 dark:text-white text-3xl flex flex-col gap-4">
+                        <div className="text-gray-800 dark:text-white text-3xl flex flex-col gap-4">
                             {gameOverMessage && <p className="uppercase">{gameOverMessage}!</p>}
                             {winningPlayer && <p>{winningPlayer.getColour()} won the game!</p>}
-                        </p>
+                        </div>
                     </div>
                     <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
                         <button

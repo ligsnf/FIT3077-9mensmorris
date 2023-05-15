@@ -100,8 +100,7 @@ export class Board {
     placeSelectedPiece(index: number, currentPlayer: Player) {
         const position = this.getPosition(index)
         if (!this.ruleChecker.getValidPlacements().includes(index)) {
-            console.log(`There is already a piece at (${index})`)
-            return
+            throw new Error("There is already a piece there.")
         }
 
         position.setPiece(new Piece(currentPlayer.getColour()))
@@ -114,8 +113,7 @@ export class Board {
     removeSelectedPiece(index: number, currentPlayer: Player, opponentPlayer: Player) {
         const position = this.getPosition(index)
         if (!this.ruleChecker.getValidRemovals(currentPlayer).includes(index)) {
-            console.log("Please choose a valid move only.")
-            return
+            throw new Error("You can only remove a piece that is highlighted green.")
         }
 
         position.unsetPiece()
@@ -134,12 +132,8 @@ export class Board {
             return
         }
         // Move a piece on the board
-        if (this.selectedPiece === index) {
-            this.unsetSelectedPiece()
-            console.log("Deselect piece")
-        }
-        else if (!this.validMoves.includes(index)) {
-            console.log("Please choose the valid move only.")
+        if (!this.validMoves.includes(index)) {
+            throw new Error("You can only move to a position highlighted green.")
         }
         else {
             if (!position.getPiece()) {
@@ -149,7 +143,6 @@ export class Board {
                 position.setPiece(new Piece(currentPlayer.getColour()))
                 this.IsMoveSuccess = true
                 this.unsetSelectedPiece()
-                console.log("Place piece here")
             }
         }
     }
@@ -157,27 +150,23 @@ export class Board {
     // Select a piece on the board
     checkSelectedPiece(index: number, currentPlayer: Player) {
         if (!this.ruleChecker.getValidSelections(currentPlayer).includes(index)) {
-            console.log("Please choose a piece only.")
-            return
+            throw new Error("Please select a piece that is your colour.")
         }
         switch (currentPlayer.getMoveType()) {
             case "slide":
                 this.validMoves = this.ruleChecker.getValidSlideDestinations(currentPlayer, index)
                 if (this.ruleChecker.getValidSlideDestinations(currentPlayer, index).length == 0) {
-                    console.log("No valid move for this piece.")
-                    return
+                    throw new Error("Cannot select piece: no valid move for this piece.")
                 }
                 break;
             case "fly":
                 this.validMoves = this.ruleChecker.getValidPlacements()
                 if (this.ruleChecker.getValidPlacements().length == 0) {
-                    console.log("No valid move for this piece.")
-                    return
+                    throw new Error("Cannot select piece: no valid move for this piece.")
                 }
                 break;
             default:
-                console.log("Please choose your move type")
-                return
+                throw new Error("Please choose your move type.")
                 break;
         }
         this.setSelectedPiece(index)

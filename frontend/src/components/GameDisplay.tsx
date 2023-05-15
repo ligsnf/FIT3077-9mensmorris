@@ -3,6 +3,7 @@ import { Game } from "../models/Game";
 import { Piece } from "../models/Piece";
 import Board from "./Board";
 import GameOverModal from "./GameOverModal";
+import ErrorAlert from "./ErrorAlert";
 import PiecesLeft from "./PiecesLeft";
 import PieceUI from "./Piece";
 
@@ -10,6 +11,9 @@ const GameDisplay = () => {
   // Initialize the game
   const [game, setGame] = useState(new Game());
   const [showGameOver, setShowGameOver] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("false");
+
 
   useEffect(() => {
     if (game.getIsGameOver()) {
@@ -28,21 +32,26 @@ const GameDisplay = () => {
 
     if (game.getIsGameOver()) { return } // cannot click if game is over
     // Handle move based on move type
-    switch (game.getCurrentPlayer().getMoveType()) {
-      case "remove":
-        game.getBoard().removeSelectedPiece(index, game.getCurrentPlayer(), game.getOtherPlayer());
-        break;
-      case "place":
-        game.getBoard().placeSelectedPiece(index, game.getCurrentPlayer());
-        break;
-      case "slide":
-        game.getBoard().moveSelectedPiece(index, game.getCurrentPlayer());
-        break;
-      case "fly":
-        game.getBoard().moveSelectedPiece(index, game.getCurrentPlayer());
-        break;
-      default:
-        break;
+    try {
+      switch (game.getCurrentPlayer().getMoveType()) {
+        case "remove":
+          game.getBoard().removeSelectedPiece(index, game.getCurrentPlayer(), game.getOtherPlayer());
+          break;
+        case "place":
+          game.getBoard().placeSelectedPiece(index, game.getCurrentPlayer());
+          break;
+        case "slide":
+          game.getBoard().moveSelectedPiece(index, game.getCurrentPlayer());
+          break;
+        case "fly":
+          game.getBoard().moveSelectedPiece(index, game.getCurrentPlayer());
+          break;
+        default:
+          break;
+      }
+    } catch (error: any) {
+      setErrorMsg(error.message)
+      setShowErrorAlert(true)
     }
     if (game.getBoard().getIsMoveSuccess()) {
       game.getBoard().setIsMoveSuccess(false);
@@ -92,6 +101,7 @@ const GameDisplay = () => {
   return (
     <>
       {showGameOver && <GameOverModal setShowModal={setShowGameOver} setNewGame={startNewGame} gameOverMessage={game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer())} winningPlayer={game.getWinner()} />}
+      {showErrorAlert && <ErrorAlert setShowAlert={setShowErrorAlert} errorMsg={errorMsg} />}
       <div className="flex flex-col items-center justify-center">
         <div className="mb-10 flex bg-amber-100 p-4 rounded text-black w-96">
           <div className="flex-1">

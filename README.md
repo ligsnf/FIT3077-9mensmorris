@@ -22,7 +22,7 @@ Make sure you have [node](https://nodejs.org/) installed.
 7. ctrl + click on link to "http://localhost:4173/" in the terminal or open manually in browser
 8. play the game
 
-Link to video [demonstration](https://youtu.be/eDFIpEemS2E).
+Link to [video demonstration](https://youtu.be/eDFIpEemS2E).
 
 ## How to play
 (for current implementation - sprint 2)

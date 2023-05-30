@@ -10,10 +10,19 @@ interface GameState {
     winner: Player | undefined;
     isGameOver: boolean;
 }
+
+export enum GameType {
+    Unset = 'unset', // game type hasn't been set yet
+    Human = 'human',
+    Computer = 'computer',
+}
 export class Game {
     private state: GameState;
+    private gameMode: GameType;
 
-    constructor(state?: GameState) {
+    constructor(gameMode: GameType, state?: GameState) {
+        this.gameMode = gameMode;
+
         if (state) {
             this.state = state
             return
@@ -61,6 +70,10 @@ export class Game {
 
     updateCurrentPlayer() {
         this.state.currentPlayer = this.getOtherPlayer();
+    }
+
+    getGameMode(): GameType {
+        return this.gameMode;
     }
 
     getPlayerWhite(): Player {

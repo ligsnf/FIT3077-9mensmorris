@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
-import { Game } from "../models/Game";
+import { Game, GameType } from "../models/Game";
 import { Piece } from "../models/Piece";
 import Board from "./Board";
 import GameOverModal from "./GameOverModal";
 import ErrorAlert from "./ErrorAlert";
 import PiecesLeft from "./PiecesLeft";
 import PieceUI from "./Piece";
+import ChooseGameMode from "./ChooseGameMode";
 
 const GameDisplay = () => {
   // Initialize the game
-  const [game, setGame] = useState(new Game());
+  const [gameMode, setGameMode] = useState(GameType.Unset);
+  const [game, setGame] = useState(new Game(gameMode));
   const [showGameOver, setShowGameOver] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [errorMsg, setErrorMsg] = useState("false");
-
 
   useEffect(() => {
     if (game.getIsGameOver()) {
@@ -25,7 +26,12 @@ const GameDisplay = () => {
   }, [game])
 
   const startNewGame = () => {
-    setGame(new Game());
+    setGameMode(GameType.Unset)
+  }
+
+  const chooseGameMode = (gameMode: GameType) => {
+    setGameMode(gameMode)
+    setGame(new Game(gameMode))
   }
 
   const handlePieceClick = (index: number) => {
@@ -63,7 +69,7 @@ const GameDisplay = () => {
 
     // Update the game state
     const gameState = game.getState();
-    setGame(new Game(gameState));
+    setGame(new Game(gameMode, gameState));
   };
 
   // Text to show above board
@@ -102,7 +108,10 @@ const GameDisplay = () => {
     <>
       {showGameOver && <GameOverModal setShowModal={setShowGameOver} setNewGame={startNewGame} gameOverMessage={game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer())} winningPlayer={game.getWinner()} />}
       {showErrorAlert && <ErrorAlert setShowAlert={setShowErrorAlert} errorMsg={errorMsg} />}
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center relative">
+        {gameMode == GameType.Unset && <div className="absolute inset-0 z-10">
+          <ChooseGameMode chooseGameMode={chooseGameMode} />
+        </div>}
         <div className="mb-10 flex bg-amber-100 p-4 rounded text-black w-96">
           <div className="flex-1">
             <PieceUI piece={new Piece(game.getCurrentPlayer().getColour())} isValidMove={false} />

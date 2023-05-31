@@ -9,6 +9,7 @@ export class Mill {
         this.positions = positions;
     }
 
+    //Getters
     getPositions(): Position[] {
         return this.positions;
     }
@@ -17,6 +18,7 @@ export class Mill {
         return this.colour;
     }
 
+    //This function will return true if the mill is formed and false otherwise
     isMillFormed(): boolean {
         const [a, b, c] = this.positions;
         const pieceA = a.getPiece();

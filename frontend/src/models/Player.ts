@@ -16,6 +16,7 @@ export class Player {
         this.isHuman = isHuman;
     }
 
+    //Getters and Setters
     getMoveType(): string {
         if (this.moveType)
             return this.moveType;

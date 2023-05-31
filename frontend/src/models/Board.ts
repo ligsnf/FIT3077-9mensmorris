@@ -153,6 +153,7 @@ export class Board {
         if (!this.ruleChecker.getValidSelections(currentPlayer).includes(index)) {
             throw new Error("Please select a piece that is your colour.")
         }
+        //This function will check if the interaction with a piece is valid
         switch (currentPlayer.getMoveType()) {
             case "slide":
                 this.validMoves = this.ruleChecker.getValidSlideDestinations(currentPlayer, index)
@@ -173,6 +174,7 @@ export class Board {
         this.setSelectedPiece(index)
     }
 
+    //This function will determine all the valid moves for a player and highlight the relevant positions for that particular move
     showValidMoves(currentPlayer: Player) {
         switch (currentPlayer.getMoveType()) {
             case "remove":
@@ -203,12 +205,14 @@ export class Board {
         }
     }
 
+    //This function will clear all the valid moves for a player
     clearValidMoves() {
         for (const index of this.validPositionsIndex) {
             this.getPosition(index).setIsValidMove(false)
         }
     }
 
+    //More getters and setters
     setSelectedPiece(index: number) {
         if (this.selectedPiece != -1) {
             this.getPiece(this.selectedPiece)?.setIsSelected(false)

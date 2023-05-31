@@ -51,6 +51,7 @@ export class RuleChecker {
         }
         else{
             if (player.getPiecesLeft() > 0) {
+                //If the player has pieces that are yet to be placed, they can place their pieces on the board
                 const placementArray = this.getValidPlacements();
                 for (let i = 0; i < placementArray.length; i++) {
                     validMoves.push([undefined, placementArray[i]]);
@@ -162,6 +163,7 @@ export class RuleChecker {
                         }
                     }
                 }
+                //Categories the valid removals into two arrays, one for pieces in a mill and one for pieces not in a mill
                 if(inMill){
                     validRemovalsMill.push(positionIndex);
                 }
@@ -171,6 +173,7 @@ export class RuleChecker {
                 
             }
         });
+        //If there no valid single pieces to remove, return the pieces in a mill
         if(validRemovals.length == 0){
             for(let i = 0; i < validRemovalsMill.length; i++){
                 validRemovals.push(validRemovalsMill[i]);
@@ -178,7 +181,7 @@ export class RuleChecker {
         }
         return validRemovals;
     }
-
+    //This function will check if a mill has been formed and return a boolean
     checkMillFormed(): PieceColour | boolean {
         var newMillFormed: boolean = false;
         //This funtion will return the color of the player who formed a mill, otherwise undefined.

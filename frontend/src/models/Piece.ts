@@ -12,6 +12,7 @@ export class Piece {
         this.isSelected = false;
     }
 
+    //Getters and Setters
     getColour(): PieceColour {
         return this.colour;
     }

@@ -28,8 +28,15 @@ export class Game {
             return
         }
 
-        const playerWhite = new Player(PieceColour.White);
-        const playerBlack = new Player(PieceColour.Black);
+        const playerWhite = new Player(PieceColour.White, true);
+        var playerBlack: Player;
+        if (this.gameMode == 'human') {
+            playerBlack = new Player(PieceColour.Black, true);
+        }
+        else {
+            playerBlack = new Player(PieceColour.Black, false);
+        }
+
 
         const defaultState: GameState = {
             board: new Board(),
@@ -41,7 +48,7 @@ export class Game {
         }
 
         this.state = defaultState
-        this.getBoard().showValidMoves(this.state.currentPlayer)
+        this.state.board.showValidMoves(this.state.currentPlayer)
     }
 
     getState(): GameState {
@@ -98,12 +105,63 @@ export class Game {
 
     // check if mill is formed and handle the case
     checkMillFormed() {
-        if (this.getRuleChecker().checkMillFormed()) {
+        const ruleChecker = this.getRuleChecker();
+        if (ruleChecker.checkMillFormed()) {
             this.state.currentPlayer.setMoveType("remove");
         } else {
             this.updateCurrentPlayer();
+            this.checkGameOver(this.state.currentPlayer, this.getOtherPlayer());
+            if (this.getIsGameOver()) {
+                return
+            }
+            if (!this.state.currentPlayer.getIsHuman()) {
+                let index;
+                let selectedPiece;
+                switch (this.getCurrentPlayer().getMoveType()) {
+                    case "place":
+                        index = this.getRandom(ruleChecker.getValidPlacements())
+                        if (index !== undefined) {
+                            this.state.board.placeSelectedPiece(index, this.getCurrentPlayer());
+                        }
+                        break;
+                    case "slide":
+                        selectedPiece = this.getRandom(ruleChecker.getValidSlides(this.state.currentPlayer));
+                        if (selectedPiece !== undefined) {
+                            this.state.board.checkSelectedPiece(selectedPiece[0], this.state.currentPlayer);
+                            this.state.board.setSelectedPiece(selectedPiece[0]);
+                            index = selectedPiece[1];
+                            if (index !== undefined) {
+                                this.state.board.moveSelectedPiece(index, this.state.currentPlayer);
+                            }
+                        }
+                        break;
+                    case "fly":
+                        index = this.getRandom(ruleChecker.getValidPlacements())
+                        selectedPiece = this.getRandom(ruleChecker.getValidSelections(this.state.currentPlayer));
+                        if (selectedPiece !== undefined) {
+                            this.state.board.checkSelectedPiece(selectedPiece, this.state.currentPlayer);
+                            this.state.board.setSelectedPiece(selectedPiece);
+                            if (index !== undefined) {
+                                this.state.board.moveSelectedPiece(index, this.state.currentPlayer);
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (ruleChecker.checkMillFormed()) {
+                    const validRemovalIndexes = ruleChecker.getValidRemovals(this.state.currentPlayer);
+                    index = this.getRandom(validRemovalIndexes);
+                    if (index !== undefined) {
+                        this.state.board.removeSelectedPiece(index, this.getCurrentPlayer(), this.getOtherPlayer());
+                    }
+                }
+                this.updateCurrentPlayer();
+            }
         }
     }
+
+
 
     checkGameOver(currentPlayer: Player, otherPlayer: Player): string {
         let winMessage: string = ""
@@ -121,4 +179,9 @@ export class Game {
         return winMessage
     }
 
+    getRandom<T>(array: T[]): T | undefined {
+        const filteredArray = array.filter(item => item !== undefined);
+        const randomIndex = Math.floor(Math.random() * filteredArray.length);
+        return filteredArray[randomIndex];
+    }
 }

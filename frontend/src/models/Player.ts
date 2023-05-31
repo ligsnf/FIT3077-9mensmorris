@@ -5,13 +5,15 @@ export class Player {
     private piecesLeft: number;
     private piecesTaken: number;
     private piecesOnBoard: number;
+    private isHuman: Boolean;
     private moveType?: string;
 
-    constructor(colour: PieceColour) {
+    constructor(colour: PieceColour, isHuman: Boolean) {
         this.colour = colour;
         this.piecesLeft = 9;
         this.piecesTaken = 0;
         this.piecesOnBoard = 0;
+        this.isHuman = isHuman;
     }
 
     getMoveType(): string {
@@ -41,6 +43,10 @@ export class Player {
 
     getPiecesLeft(): number {
         return this.piecesLeft;
+    }
+
+    getIsHuman(): Boolean{
+        return this.isHuman
     }
 
     decrementPiecesLeft(): void {

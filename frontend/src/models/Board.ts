@@ -129,6 +129,7 @@ export class Board {
         // Select a piece on the board
         if (this.selectedPiece == -1 || currentPlayer.getColour() == position.getPiece()?.getColour()) {
             this.checkSelectedPiece(index, currentPlayer)
+            this.setIsMoveSuccess(false);
             return
         }
         // Move a piece on the board

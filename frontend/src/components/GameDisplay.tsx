@@ -18,30 +18,36 @@ const GameDisplay = () => {
 
   useEffect(() => {
     if (game.getIsGameOver()) {
-      setShowGameOver(true)
+      setShowGameOver(true);
     }
 
-    return () => {
-    }
-  }, [game])
+    return () => {};
+  }, [game]);
 
   const startNewGame = () => {
-    setGameMode(GameType.Unset)
-  }
+    setGameMode(GameType.Unset);
+  };
 
   const chooseGameMode = (gameMode: GameType) => {
-    setGameMode(gameMode)
-    setGame(new Game(gameMode))
-  }
+    setGameMode(gameMode);
+    setGame(new Game(gameMode));
+  };
 
   const handlePieceClick = (index: number) => {
-
-    if (game.getIsGameOver()) { return } // cannot click if game is over
+    if (game.getIsGameOver()) {
+      return;
+    } // cannot click if game is over
     // Handle move based on move type
     try {
       switch (game.getCurrentPlayer().getMoveType()) {
         case "remove":
-          game.getBoard().removeSelectedPiece(index, game.getCurrentPlayer(), game.getOtherPlayer());
+          game
+            .getBoard()
+            .removeSelectedPiece(
+              index,
+              game.getCurrentPlayer(),
+              game.getOtherPlayer()
+            );
           break;
         case "place":
           game.getBoard().placeSelectedPiece(index, game.getCurrentPlayer());
@@ -56,13 +62,13 @@ const GameDisplay = () => {
           break;
       }
     } catch (error: any) {
-      setErrorMsg(error.message)
-      setShowErrorAlert(true)
+      setErrorMsg(error.message);
+      setShowErrorAlert(true);
+      game.getBoard().setIsMoveSuccess(false);
     }
     if (game.getBoard().getIsMoveSuccess()) {
       game.getBoard().setIsMoveSuccess(false);
       game.checkMillFormed();
-      game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer());
     }
     game.getBoard().clearValidMoves();
     game.getBoard().showValidMoves(game.getCurrentPlayer());
@@ -73,52 +79,70 @@ const GameDisplay = () => {
   };
 
   // Text to show above board
-  let statusText
+  let statusText;
   if (!game.getIsGameOver()) {
     switch (game.getCurrentPlayer().getMoveType()) {
       case "remove":
-        statusText = "Remove opponent's piece"
+        statusText = "Remove opponent's piece";
         break;
       case "place":
-        statusText = "Place a piece"
+        statusText = "Place a piece";
         break;
       case "slide":
         if (game.getBoard().getSelectedPiece() == -1) {
-          statusText = "Select a piece"
+          statusText = "Select a piece";
         } else {
-          statusText = "Move your piece"
+          statusText = "Move your piece";
         }
         break;
       case "fly":
         if (game.getBoard().getSelectedPiece() == -1) {
-          statusText = "Select a piece"
+          statusText = "Select a piece";
         } else {
-          statusText = "Move your piece"
+          statusText = "Move your piece";
         }
         break;
       default:
         break;
     }
   } else {
-    statusText = game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer())
+    statusText = game.checkGameOver(
+      game.getCurrentPlayer(),
+      game.getOtherPlayer()
+    );
   }
 
   // Render the game board
   return (
     <>
-      {showGameOver && <GameOverModal setShowModal={setShowGameOver} setNewGame={startNewGame} gameOverMessage={game.checkGameOver(game.getCurrentPlayer(), game.getOtherPlayer())} winningPlayer={game.getWinner()} />}
-      {showErrorAlert && <ErrorAlert setShowAlert={setShowErrorAlert} errorMsg={errorMsg} />}
+      {showGameOver && (
+        <GameOverModal
+          setShowModal={setShowGameOver}
+          setNewGame={startNewGame}
+          gameOverMessage={game.checkGameOver(
+            game.getCurrentPlayer(),
+            game.getOtherPlayer()
+          )}
+          winningPlayer={game.getWinner()}
+        />
+      )}
+      {showErrorAlert && (
+        <ErrorAlert setShowAlert={setShowErrorAlert} errorMsg={errorMsg} />
+      )}
       <div className="flex flex-col items-center justify-center relative">
-        {gameMode == GameType.Unset && <div className="absolute inset-0 z-10">
-          <ChooseGameMode chooseGameMode={chooseGameMode} />
-        </div>}
+        {gameMode == GameType.Unset && (
+          <div className="absolute inset-0 z-10">
+            <ChooseGameMode chooseGameMode={chooseGameMode} />
+          </div>
+        )}
         <div className="mb-10 flex bg-amber-100 p-4 rounded text-black w-96">
           <div className="flex-1">
-            <PieceUI piece={new Piece(game.getCurrentPlayer().getColour())} isValidMove={false} />
+            <PieceUI
+              piece={new Piece(game.getCurrentPlayer().getColour())}
+              isValidMove={false}
+            />
           </div>
-          <h3 className="flex-[10] justify-center text-lg">
-            {statusText}
-          </h3>
+          <h3 className="flex-[10] justify-center text-lg">{statusText}</h3>
         </div>
         <section className="flex justify-between gap-12">
           <div className="grid items-center">

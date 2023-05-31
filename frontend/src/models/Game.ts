@@ -51,6 +51,7 @@ export class Game {
         this.state.board.showValidMoves(this.state.currentPlayer)
     }
 
+    //Getters and Setters
     getState(): GameState {
         return this.state;
     }
@@ -103,7 +104,7 @@ export class Game {
         return this.state.board.getRuleChecker();
     }
 
-    // check if mill is formed and handle the case
+    //Check if mill is formed and handle the case
     checkMillFormed() {
         const ruleChecker = this.getRuleChecker();
         if (ruleChecker.checkMillFormed()) {
@@ -161,15 +162,16 @@ export class Game {
         }
     }
 
-
-
+    // check if game is over and handle the case
     checkGameOver(currentPlayer: Player, otherPlayer: Player): string {
         let winMessage: string = ""
+        //Check if any player has run out of pieces
         if (currentPlayer.getPiecesOnBoard() < 3 && currentPlayer.getPiecesLeft() === 0) {
             this.state.winner = otherPlayer;
             this.state.isGameOver = true;
             winMessage = `${currentPlayer.getColour()} has less than 3 pieces left`
         } else if (this.getRuleChecker().getValidMoves(currentPlayer, false).length === 0) {
+            //If the current player has no valid moves, the other player wins
             this.state.winner = otherPlayer;
             this.state.isGameOver = true;
             winMessage = `${currentPlayer.getColour()} has no valid moves`
@@ -179,6 +181,7 @@ export class Game {
         return winMessage
     }
 
+    //Return a random element from an array
     getRandom<T>(array: T[]): T | undefined {
         const filteredArray = array.filter(item => item !== undefined);
         const randomIndex = Math.floor(Math.random() * filteredArray.length);

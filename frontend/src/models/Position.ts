@@ -10,6 +10,7 @@ export class Position {
         this.neighbours = [];
     }
 
+    //Getters and Setters
     getNeighbours(): number[] {
         return this.neighbours;
     }

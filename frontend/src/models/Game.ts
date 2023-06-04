@@ -17,6 +17,7 @@ export enum GameType {
     Computer = 'computer',
 }
 export class Game {
+    //Initialise class attributes
     private state: GameState;
     private gameMode: GameType;
 
@@ -27,7 +28,7 @@ export class Game {
             this.state = state
             return
         }
-
+        //Initialise players based on game mode (Human or Computer)
         const playerWhite = new Player(PieceColour.White, true);
         var playerBlack: Player;
         if (this.gameMode == 'human') {
@@ -37,7 +38,7 @@ export class Game {
             playerBlack = new Player(PieceColour.Black, false);
         }
 
-
+        //Initialise game state for a new game
         const defaultState: GameState = {
             board: new Board(),
             playerWhite: playerWhite,
@@ -46,28 +47,32 @@ export class Game {
             winner: undefined,
             isGameOver: false,
         }
-
+        //Set the initiliased game state
         this.state = defaultState
         this.state.board.showValidMoves(this.state.currentPlayer)
     }
 
-    //Getters and Setters
+    //Getter for game state
     getState(): GameState {
         return this.state;
     }
 
+    //Getter for board
     getBoard(): Board {
         return this.state.board;
     }
 
+    //Getter for current player
     getCurrentPlayer(): Player {
         return this.state.currentPlayer;
     }
 
+    //Setter for current player
     setCurrentPlayer(player: Player) {
         this.state.currentPlayer = player;
     }
 
+    //Getter for other player
     getOtherPlayer(): Player {
         if (this.state.currentPlayer === this.state.playerWhite) {
             return this.state.playerBlack;
@@ -76,30 +81,37 @@ export class Game {
         }
     }
 
+    //This function will switch the current player to the other player
     updateCurrentPlayer() {
         this.state.currentPlayer = this.getOtherPlayer();
     }
 
+    //Getter for game mode
     getGameMode(): GameType {
         return this.gameMode;
     }
 
+    //Getter for player white
     getPlayerWhite(): Player {
         return this.state.playerWhite;
     }
 
+    //Getter for player black
     getPlayerBlack(): Player {
         return this.state.playerBlack;
     }
 
+    //Getter for winner
     getWinner(): Player | undefined {
         return this.state.winner;
     }
 
+    //This function will retirn whether the game is over based on the game state
     getIsGameOver(): boolean {
         return this.state.isGameOver;
     }
 
+    //Getter for rule checker
     getRuleChecker() {
         return this.state.board.getRuleChecker();
     }
@@ -107,32 +119,38 @@ export class Game {
     //Check if mill is formed and handle the case
     checkMillFormed() {
         const ruleChecker = this.getRuleChecker();
+        //If a mill is formed, the current player gets to remove a piece. Else, the other player gets to play
         if (ruleChecker.checkMillFormed()) {
             this.state.currentPlayer.setMoveType("remove");
         } else {
             this.updateCurrentPlayer();
+            //Before handing over the turn, check if the game is over
             this.checkGameOver(this.state.currentPlayer, this.getOtherPlayer());
             if (this.getIsGameOver()) {
                 return
             }
+            //If the other player is a computer, play a move for the computer
             if (!this.state.currentPlayer.getIsHuman()) {
                 this.playComputerMove();
             }
         }
     }
 
-    // play a move for the computer
+    // Play a move for the computer
     playComputerMove() {
         const ruleChecker = this.getRuleChecker();
         let index;
         let selectedPiece;
+        //Based on the state of the game and the move type of the current player, play a move for the computer
         switch (this.getCurrentPlayer().getMoveType()) {
+            //If the current computer is able to place a piece, place a piece at a random valid location
             case "place":
                 index = this.getRandom(ruleChecker.getValidPlacements())
                 if (index !== undefined) {
                     this.state.board.placeSelectedPiece(index, this.getCurrentPlayer());
                 }
                 break;
+            //If the current computer is able to slide a piece, slide a random piece to a random valid location
             case "slide":
                 selectedPiece = this.getRandom(ruleChecker.getValidSlides(this.state.currentPlayer));
                 if (selectedPiece !== undefined) {
@@ -144,6 +162,7 @@ export class Game {
                     }
                 }
                 break;
+            //If the current computer is able to fly a piece, fly a random piece to a random valid location
             case "fly":
                 index = this.getRandom(ruleChecker.getValidPlacements())
                 selectedPiece = this.getRandom(ruleChecker.getValidSelections(this.state.currentPlayer));
@@ -158,6 +177,7 @@ export class Game {
             default:
                 break;
         }
+        //If a mill is formed as a result of the computer's move, remove a random piece from the other player
         if (ruleChecker.checkMillFormed()) {
             const validRemovalIndexes = ruleChecker.getValidRemovals(this.state.currentPlayer);
             index = this.getRandom(validRemovalIndexes);
@@ -165,6 +185,7 @@ export class Game {
                 this.state.board.removeSelectedPiece(index, this.getCurrentPlayer(), this.getOtherPlayer());
             }
         }
+        //Switch over to the human player 
         this.updateCurrentPlayer();
     }
 

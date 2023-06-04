@@ -104,6 +104,7 @@ export class RuleChecker {
     //This function will return a list of valid moves for a given player to slide a piece.
     getValidSlides(player: Player): number[][] {
         const validSlides: number[][] = [];
+        //For each position on the board, check if the position is empty and if the colour of the current piece is the same as the players
         this.getBoard().getValidPosition().forEach((positionIndex) => {
             const currentPosition: Position = this.getBoard().getPosition(positionIndex);
             currentPosition.getNeighbours().forEach((neighbourIndex) => {

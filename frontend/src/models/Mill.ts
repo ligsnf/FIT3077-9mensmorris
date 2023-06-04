@@ -9,11 +9,12 @@ export class Mill {
         this.positions = positions;
     }
 
-    //Getters
+    //Getter for the positions of the mill
     getPositions(): Position[] {
         return this.positions;
     }
 
+    //Getter for the colour of the mill
     getColor(): PieceColour | undefined {
         return this.colour;
     }

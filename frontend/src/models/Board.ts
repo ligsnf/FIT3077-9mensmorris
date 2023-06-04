@@ -5,6 +5,7 @@ import { Player } from './Player'
 import { RuleChecker } from './RuleChecker'
 
 export class Board {
+    //Delcaring all the required class attributes
     private positions: (Position | null)[]
     private mills: { [key: string]: Mill }
     private selectedPiece: number
@@ -13,21 +14,24 @@ export class Board {
     private ruleChecker: RuleChecker
     private validPositionsIndex: number[]
 
+    //Constructor for the board class
     constructor() {
         this.positions = Array(49).fill(null)
-
         this.ruleChecker = new RuleChecker(this);
 
         const validPositions = [0, 3, 6, 8, 10, 12, 16, 17, 18, 21, 22, 23, 25, 26, 27, 30, 31, 32, 36, 38, 40, 42, 45, 48]
         const neighbours = [[3, 21], [0, 6, 10], [3, 27], [10, 22], [3, 8, 12, 17], [10, 26], [17, 23], [10, 16, 18], [17, 25], [0, 22, 42], [8, 21, 23, 36], [16, 22, 30], [18, 26, 32], [12, 25, 27, 40], [6, 26, 48], [23, 31], [30, 32, 38], [25, 31], [22, 38], [31, 36, 40, 45], [26, 38], [21, 45], [38, 42, 48], [27, 45]]
 
+
         this.validPositionsIndex = validPositions;
+        //For all the valid positions, initialise a position object and set its neighbours
         for (let i = 0; i < validPositions.length; i++) {
             const index = validPositions[i]
             this.positions[index] = new Position()
             this.positions[index]?.setNeighbours(neighbours[i])
         }
 
+        //Define each mill based on the positions and reference them by a key
         this.mills = {
             '0-6': new Mill([this.getPosition(0), this.getPosition(3), this.getPosition(6)]),
             '0-42': new Mill([this.getPosition(0), this.getPosition(21), this.getPosition(42)]),
@@ -46,6 +50,8 @@ export class Board {
             '25-27': new Mill([this.getPosition(25), this.getPosition(26), this.getPosition(27)]),
             '31-45': new Mill([this.getPosition(31), this.getPosition(38), this.getPosition(45)]),
         }
+
+        //Initialise variables to keep track of the selected piece and valid moves
         this.IsMoveSuccess = false
         this.selectedPiece = -1
         this.validMoves = []
@@ -59,6 +65,7 @@ export class Board {
     // Helper method to get the position at a given row and column
     public getPosition(index: number): Position {
         const position = this.positions[index]
+        // Alert if position is null
         if (position === null) {
             throw new Error(`No position found at index ${index}`)
         }
@@ -176,6 +183,7 @@ export class Board {
 
     //This function will determine all the valid moves for a player and highlight the relevant positions for that particular move
     showValidMoves(currentPlayer: Player) {
+        //Depending on the move type, get the valid moves for the player by calling the rule checker
         switch (currentPlayer.getMoveType()) {
             case "remove":
                 this.validMoves = this.ruleChecker.getValidRemovals(currentPlayer)
@@ -200,6 +208,7 @@ export class Board {
             default:
                 break;
         }
+        //Highlight all the valid moves for the player
         for (const index of this.validMoves) {
             this.getPosition(index).setIsValidMove(true)
         }
@@ -207,6 +216,7 @@ export class Board {
 
     //This function will clear all the valid moves for a player
     clearValidMoves() {
+        //This for loop will clear all the valid moves for the current player
         for (const index of this.validPositionsIndex) {
             this.getPosition(index).setIsValidMove(false)
         }
@@ -218,7 +228,7 @@ export class Board {
         this.showValidMoves(currentPlayer)
     }
 
-    //More getters and setters
+    //This function handles the interaction of selecting a piece
     setSelectedPiece(index: number) {
         if (this.selectedPiece != -1) {
             this.getPiece(this.selectedPiece)?.setIsSelected(false)
@@ -227,26 +237,32 @@ export class Board {
         this.selectedPiece = index
     }
 
+    //This function will unset the selected piece
     unsetSelectedPiece() {
         this.getPiece(this.selectedPiece)?.setIsSelected(false)
         this.selectedPiece = -1
     }
 
+    //Getter for the current selected piece
     getSelectedPiece(): number {
         return this.selectedPiece
     }
 
+    //Getter for whether the execution of the move was successful
     getIsMoveSuccess(): boolean {
         return this.IsMoveSuccess
     }
+    //Setter for whether the execution of the move was successful
     setIsMoveSuccess(isMoved: boolean) {
         this.IsMoveSuccess = isMoved
     }
 
+    //Getter for the valid moves
     getValidPosition(): number[] {
         return this.validPositionsIndex;
     }
 
+    //Getter for the rule checker
     getRuleChecker(): RuleChecker {
         return this.ruleChecker;
     }

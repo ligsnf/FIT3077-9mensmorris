@@ -21,7 +21,7 @@ const GameDisplay = () => {
       setShowGameOver(true);
     }
 
-    return () => {};
+    return () => { };
   }, [game]);
 
   const startNewGame = () => {
@@ -70,13 +70,15 @@ const GameDisplay = () => {
       game.getBoard().setIsMoveSuccess(false);
       game.checkMillFormed();
     }
-    game.getBoard().clearValidMoves();
-    game.getBoard().showValidMoves(game.getCurrentPlayer());
+    game.getBoard().refreshValidMoves(game.getCurrentPlayer());
+    updateGameState();
+  };
 
+  const updateGameState = () => {
     // Update the game state
     const gameState = game.getState();
     setGame(new Game(gameMode, gameState));
-  };
+  }
 
   // Text to show above board
   let statusText;

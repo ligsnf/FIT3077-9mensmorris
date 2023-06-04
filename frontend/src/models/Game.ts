@@ -116,50 +116,56 @@ export class Game {
                 return
             }
             if (!this.state.currentPlayer.getIsHuman()) {
-                let index;
-                let selectedPiece;
-                switch (this.getCurrentPlayer().getMoveType()) {
-                    case "place":
-                        index = this.getRandom(ruleChecker.getValidPlacements())
-                        if (index !== undefined) {
-                            this.state.board.placeSelectedPiece(index, this.getCurrentPlayer());
-                        }
-                        break;
-                    case "slide":
-                        selectedPiece = this.getRandom(ruleChecker.getValidSlides(this.state.currentPlayer));
-                        if (selectedPiece !== undefined) {
-                            this.state.board.checkSelectedPiece(selectedPiece[0], this.state.currentPlayer);
-                            this.state.board.setSelectedPiece(selectedPiece[0]);
-                            index = selectedPiece[1];
-                            if (index !== undefined) {
-                                this.state.board.moveSelectedPiece(index, this.state.currentPlayer);
-                            }
-                        }
-                        break;
-                    case "fly":
-                        index = this.getRandom(ruleChecker.getValidPlacements())
-                        selectedPiece = this.getRandom(ruleChecker.getValidSelections(this.state.currentPlayer));
-                        if (selectedPiece !== undefined) {
-                            this.state.board.checkSelectedPiece(selectedPiece, this.state.currentPlayer);
-                            this.state.board.setSelectedPiece(selectedPiece);
-                            if (index !== undefined) {
-                                this.state.board.moveSelectedPiece(index, this.state.currentPlayer);
-                            }
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                if (ruleChecker.checkMillFormed()) {
-                    const validRemovalIndexes = ruleChecker.getValidRemovals(this.state.currentPlayer);
-                    index = this.getRandom(validRemovalIndexes);
-                    if (index !== undefined) {
-                        this.state.board.removeSelectedPiece(index, this.getCurrentPlayer(), this.getOtherPlayer());
-                    }
-                }
-                this.updateCurrentPlayer();
+                this.playComputerMove();
             }
         }
+    }
+
+    // play a move for the computer
+    playComputerMove() {
+        const ruleChecker = this.getRuleChecker();
+        let index;
+        let selectedPiece;
+        switch (this.getCurrentPlayer().getMoveType()) {
+            case "place":
+                index = this.getRandom(ruleChecker.getValidPlacements())
+                if (index !== undefined) {
+                    this.state.board.placeSelectedPiece(index, this.getCurrentPlayer());
+                }
+                break;
+            case "slide":
+                selectedPiece = this.getRandom(ruleChecker.getValidSlides(this.state.currentPlayer));
+                if (selectedPiece !== undefined) {
+                    this.state.board.checkSelectedPiece(selectedPiece[0], this.state.currentPlayer);
+                    this.state.board.setSelectedPiece(selectedPiece[0]);
+                    index = selectedPiece[1];
+                    if (index !== undefined) {
+                        this.state.board.moveSelectedPiece(index, this.state.currentPlayer);
+                    }
+                }
+                break;
+            case "fly":
+                index = this.getRandom(ruleChecker.getValidPlacements())
+                selectedPiece = this.getRandom(ruleChecker.getValidSelections(this.state.currentPlayer));
+                if (selectedPiece !== undefined) {
+                    this.state.board.checkSelectedPiece(selectedPiece, this.state.currentPlayer);
+                    this.state.board.setSelectedPiece(selectedPiece);
+                    if (index !== undefined) {
+                        this.state.board.moveSelectedPiece(index, this.state.currentPlayer);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        if (ruleChecker.checkMillFormed()) {
+            const validRemovalIndexes = ruleChecker.getValidRemovals(this.state.currentPlayer);
+            index = this.getRandom(validRemovalIndexes);
+            if (index !== undefined) {
+                this.state.board.removeSelectedPiece(index, this.getCurrentPlayer(), this.getOtherPlayer());
+            }
+        }
+        this.updateCurrentPlayer();
     }
 
     // check if game is over and handle the case

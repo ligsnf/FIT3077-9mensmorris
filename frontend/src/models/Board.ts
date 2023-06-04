@@ -212,6 +212,12 @@ export class Board {
         }
     }
 
+    // this function clears the valid moves from previous turn and shows the valid moves for the current turn
+    refreshValidMoves(currentPlayer: Player) {
+        this.clearValidMoves()
+        this.showValidMoves(currentPlayer)
+    }
+
     //More getters and setters
     setSelectedPiece(index: number) {
         if (this.selectedPiece != -1) {

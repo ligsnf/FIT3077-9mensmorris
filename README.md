@@ -12,7 +12,7 @@ Liangdi - lwan0141@student.monash.edu
 See [Contribution Log](https://git.infotech.monash.edu/fit3077-s1-2023/CL_Thursday4pm_Team4/project/-/wikis/Contribution-Log)
 
 ## How to run
-Make sure you have [node](https://nodejs.org/) installed.
+Make sure you have [node](https://nodejs.org/) installed (we are using node v18).
 1. clone repository
 2. open terminal
 3. cd into "\project\frontend"
@@ -28,3 +28,9 @@ Link to [video demonstration](https://youtu.be/eDFIpEemS2E).
 (for current implementation - sprint 2)
 1. Click on a position on the board to place a piece.
 2. Once you have no pieces left, click on a piece that has empty positions adjacent to it. This will select that piece and it will have a green shadow. The valid moves will be highlighted, and click one of those positions to move the piece there. Otherwise, click on the same piece to deselect it.
+
+## Coding Practices
+This project aims to adhere to the following:
+- TypeScript [style guide](https://google.github.io/styleguide/tsguide.html)
+- React [design principles](https://react.dev/learn/thinking-in-react)
+- Tailwind CSS [core concepts](https://tailwindcss.com/docs/reusing-styles)

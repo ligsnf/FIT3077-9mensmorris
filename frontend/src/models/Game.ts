@@ -187,7 +187,7 @@ export class Game {
         }
         //Switch over to the human player 
         this.updateCurrentPlayer();
-        //Check game over before updating player
+        //Check game over after updating player
         this.checkGameOver(this.state.currentPlayer, this.getOtherPlayer());
         if (this.getIsGameOver()) {
             return

@@ -22,12 +22,9 @@ Make sure you have [node](https://nodejs.org/) installed (we are using node v18)
 7. ctrl + click on link to "http://localhost:4173/" in the terminal or open manually in browser
 8. play the game
 
-Link to [video demonstration](https://youtu.be/eDFIpEemS2E).
-
-## How to play
-(for current implementation - sprint 2)
-1. Click on a position on the board to place a piece.
-2. Once you have no pieces left, click on a piece that has empty positions adjacent to it. This will select that piece and it will have a green shadow. The valid moves will be highlighted, and click one of those positions to move the piece there. Otherwise, click on the same piece to deselect it.
+## Video demonstrations
+- Sprint 3: [video link](https://youtu.be/eDFIpEemS2E)
+- Sprint 4: [video link](https://youtu.be/YNiXaRDA7TQ)
 
 ## Coding Practices
 This project aims to adhere to the following:
